@@ -1,0 +1,26 @@
+class Main{
+    
+
+    public static void main(String[] a){
+    }
+}
+
+class Operations {
+    // a function that sums two numbers a and b
+    public int somme(int a,int b){
+        return a+b;
+    }
+    /*
+      This function divides a/b
+      verifies that b is not 0
+    */
+    public int division(int a,int b){
+        if(b==0){
+            System.out.println("Impossible! b should not be zero!");
+            return 0;
+        }
+        else {
+            return a/b;
+        }
+    }
+}
