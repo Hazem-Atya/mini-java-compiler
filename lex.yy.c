@@ -453,8 +453,18 @@ char *yytext;
 #line 1 "1-analyse_lexicale/java2.lex"
 #define INITIAL 0
 #line 2 "1-analyse_lexicale/java2.lex"
+	
+ /* We usually need these... */	
+ #include <stdio.h>	
+ #include <stdlib.h>	
+#include <string.h>
+#include <math.h>
+ #include "java.tab.h"	                                                                         	
+ /* Local stuff we need here... */	
+#include <math.h>	 			
+
 	int nbLigne =1;
-#line 458 "lex.yy.c"
+#line 468 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -605,10 +615,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 23 "1-analyse_lexicale/java2.lex"
+#line 33 "1-analyse_lexicale/java2.lex"
 
 
-#line 612 "lex.yy.c"
+#line 622 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -693,187 +703,187 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 25 "1-analyse_lexicale/java2.lex"
+#line 35 "1-analyse_lexicale/java2.lex"
 // do nothing 
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 26 "1-analyse_lexicale/java2.lex"
+#line 36 "1-analyse_lexicale/java2.lex"
 nbLigne++;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 27 "1-analyse_lexicale/java2.lex"
-return class;
+#line 37 "1-analyse_lexicale/java2.lex"
+return kw_class;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 28 "1-analyse_lexicale/java2.lex"
-return public; 
+#line 38 "1-analyse_lexicale/java2.lex"
+return kw_public; 
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 29 "1-analyse_lexicale/java2.lex"
-return static; 
+#line 39 "1-analyse_lexicale/java2.lex"
+return kw_static; 
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 30 "1-analyse_lexicale/java2.lex"
-return void;
+#line 40 "1-analyse_lexicale/java2.lex"
+return kw_void;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 31 "1-analyse_lexicale/java2.lex"
-return main;
+#line 41 "1-analyse_lexicale/java2.lex"
+return kw_main;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 32 "1-analyse_lexicale/java2.lex"
-return extends;
+#line 42 "1-analyse_lexicale/java2.lex"
+return kw_extends;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 33 "1-analyse_lexicale/java2.lex"
-return return; 
+#line 43 "1-analyse_lexicale/java2.lex"
+return kw_return; 
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 34 "1-analyse_lexicale/java2.lex"
-return if;
+#line 44 "1-analyse_lexicale/java2.lex"
+return kw_if;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 35 "1-analyse_lexicale/java2.lex"
-return else;
+#line 45 "1-analyse_lexicale/java2.lex"
+return kw_else;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 36 "1-analyse_lexicale/java2.lex"
-return while;
+#line 46 "1-analyse_lexicale/java2.lex"
+return kw_while;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 37 "1-analyse_lexicale/java2.lex"
-return print;
+#line 47 "1-analyse_lexicale/java2.lex"
+return kw_print;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 38 "1-analyse_lexicale/java2.lex"
-return this;
+#line 48 "1-analyse_lexicale/java2.lex"
+return kw_this;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 39 "1-analyse_lexicale/java2.lex"
-return new;
+#line 49 "1-analyse_lexicale/java2.lex"
+return kw_new;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 40 "1-analyse_lexicale/java2.lex"
-return length;
+#line 50 "1-analyse_lexicale/java2.lex"
+return kw_length;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 42 "1-analyse_lexicale/java2.lex"
-return type;
+#line 52 "1-analyse_lexicale/java2.lex"
+return _type;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 43 "1-analyse_lexicale/java2.lex"
-return String
+#line 53 "1-analyse_lexicale/java2.lex"
+return kw_String;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 44 "1-analyse_lexicale/java2.lex"
+#line 54 "1-analyse_lexicale/java2.lex"
 return openParentheses;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 45 "1-analyse_lexicale/java2.lex"
+#line 55 "1-analyse_lexicale/java2.lex"
 return closeParentheses;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 46 "1-analyse_lexicale/java2.lex"
+#line 56 "1-analyse_lexicale/java2.lex"
 return openSquareBrackets;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 47 "1-analyse_lexicale/java2.lex"
+#line 57 "1-analyse_lexicale/java2.lex"
 return closeSquareBrackets;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 48 "1-analyse_lexicale/java2.lex"
+#line 58 "1-analyse_lexicale/java2.lex"
 return openBraces;
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 49 "1-analyse_lexicale/java2.lex"
+#line 59 "1-analyse_lexicale/java2.lex"
 return closeBraces;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 51 "1-analyse_lexicale/java2.lex"
+#line 61 "1-analyse_lexicale/java2.lex"
 return operator;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 52 "1-analyse_lexicale/java2.lex"
+#line 62 "1-analyse_lexicale/java2.lex"
 return affectation;
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 53 "1-analyse_lexicale/java2.lex"
+#line 63 "1-analyse_lexicale/java2.lex"
 return notOperator;
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 54 "1-analyse_lexicale/java2.lex"
+#line 64 "1-analyse_lexicale/java2.lex"
 return dot;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 55 "1-analyse_lexicale/java2.lex"
+#line 65 "1-analyse_lexicale/java2.lex"
 return Semicolon;
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 56 "1-analyse_lexicale/java2.lex"
+#line 66 "1-analyse_lexicale/java2.lex"
 return comma;
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 57 "1-analyse_lexicale/java2.lex"
+#line 67 "1-analyse_lexicale/java2.lex"
 return doubleQuote;
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 58 "1-analyse_lexicale/java2.lex"
+#line 68 "1-analyse_lexicale/java2.lex"
 return simpleQuote;
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 62 "1-analyse_lexicale/java2.lex"
+#line 72 "1-analyse_lexicale/java2.lex"
 return booleanLiteral;
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 63 "1-analyse_lexicale/java2.lex"
+#line 73 "1-analyse_lexicale/java2.lex"
 return integerLiteral;
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 64 "1-analyse_lexicale/java2.lex"
-return indentifier;
+#line 74 "1-analyse_lexicale/java2.lex"
+return identifier;
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 67 "1-analyse_lexicale/java2.lex"
+#line 77 "1-analyse_lexicale/java2.lex"
 /* do nothing */   
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 68 "1-analyse_lexicale/java2.lex"
+#line 78 "1-analyse_lexicale/java2.lex"
 {
                                              int isComment = 1;
                                              char c;
@@ -894,15 +904,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 87 "1-analyse_lexicale/java2.lex"
+#line 97 "1-analyse_lexicale/java2.lex"
 { printf("\n unexpected character on line %d \n",  nbLigne);   }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 88 "1-analyse_lexicale/java2.lex"
+#line 98 "1-analyse_lexicale/java2.lex"
 ECHO;
 	YY_BREAK
-#line 906 "lex.yy.c"
+#line 916 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1788,18 +1798,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 88 "1-analyse_lexicale/java2.lex"
+#line 98 "1-analyse_lexicale/java2.lex"
 
-int main(int argc, char *argv[]) 
-{
-     yyin = fopen(argv[1], "r");
-     yylex();
-     fclose(yyin);
-}
-
-int yywrap()
-{
-	return(1);
-}
 
 

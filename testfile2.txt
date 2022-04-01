@@ -1,7 +1,19 @@
 class Main{
     
 
-    public static void main(String[] a){
+
+    public
+     static 
+     void
+      main
+      (
+          String[]
+           a)
+           {
+
+
+
+        System.out.println(a);
     }
 }
 
@@ -14,7 +26,12 @@ class Operations {
       This function divides a/b
       verifies that b is not 0
     */
-    public int division(int a,int b){
+    public int division
+    (
+        int a
+        ,int b
+        )
+        {
         if(b==0){
             System.out.println("Impossible! b should not be zero!");
             return 0;

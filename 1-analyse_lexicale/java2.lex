@@ -1,4 +1,14 @@
 %{
+	
+ /* We usually need these... */	
+ #include <stdio.h>	
+ #include <stdlib.h>	
+#include <string.h>
+#include <math.h>
+ #include "java.tab.h"	                                                                         	
+ /* Local stuff we need here... */	
+#include <math.h>	 			
+
 	int nbLigne =1;
 %}
 delim            ([ \t]|(" ")) 
@@ -24,23 +34,23 @@ array             ({primitiveType}{delim}+{openSquareBrackets}{delim*}{closeSqua
 
 {delim}+        // do nothing 
 "\n"            nbLigne++;
-"class"                   return class;
-"public"                  return public; 
-"static"                  return static; 
-"void"                    return void;
-"main"                    return main;
-"extends"                 return extends;
-"return"                  return return; 
-"if"                      return if;
-"else"                    return else;
-"while"                   return while;
-"System.out.println"      return print;
-"this"                    return this;
-"new"                     return new;
-"length"                  return length;
+"class"                   return kw_class;
+"public"                  return kw_public; 
+"static"                  return kw_static; 
+"void"                    return kw_void;
+"main"                    return kw_main;
+"extends"                 return kw_extends;
+"return"                  return kw_return; 
+"if"                      return kw_if;
+"else"                    return kw_else;
+"while"                   return kw_while;
+"System.out.println"      return kw_print;
+"this"                    return kw_this;
+"new"                     return kw_new;
+"length"                  return kw_length;
 
-{type}                              return type;
-"String"                    return String
+{type}                              return _type;
+"String"                    return kw_String;
 {openParentheses}                       return openParentheses;
 {closeParentheses}                      return closeParentheses;
 {openSquareBrackets}                    return openSquareBrackets;
@@ -61,7 +71,7 @@ array             ({primitiveType}{delim}+{openSquareBrackets}{delim*}{closeSqua
 
 {booleanLiteral}                        return booleanLiteral;
 {integerLiteral}                        return integerLiteral;
-{identifier}                            return indentifier;
+{identifier}                            return identifier;
 
 
 \/\/.*                                     /* do nothing */   
@@ -86,16 +96,5 @@ array             ({primitiveType}{delim}+{openSquareBrackets}{delim*}{closeSqua
 
 .                                     { printf("\n unexpected character on line %d \n",  nbLigne);   }
 %%
-int main(int argc, char *argv[]) 
-{
-     yyin = fopen(argv[1], "r");
-     yylex();
-     fclose(yyin);
-}
-
-int yywrap()
-{
-	return(1);
-}
 
 

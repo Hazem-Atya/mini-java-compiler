@@ -1,30 +1,33 @@
 %{
-	
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include <stdio.h>	
- 			
-int yyerror(char const *msg);	
-int yylex(void);
-extern int yylineno;
+extern int nbLigne;
+
+
+int yyerror(char const * msg);	
+int yylex();
 
 %}
 
 
-%token  class
-%token  public 
-%token  static 
-%token  void
-%token  main
-%token  extends
-%token  return 
-%token  if
-%token  else
-%token  while
-%token  print
-%token  this
-%token  new
-%token  length
-%token  type
+%token  kw_class
+%token  kw_public 
+%token  kw_static 
+%token  kw_void
+%token  kw_main
+%token  kw_extends
+%token  kw_return 
+%token  kw_if
+%token  kw_else
+%token  kw_while
+%token  kw_print
+%token  kw_this
+%token  kw_new
+%token  kw_length
+%token  _type
+%token  kw_String
 %token  openParentheses
 %token  closeParentheses
 %token  openSquareBrackets
@@ -41,47 +44,47 @@ extern int yylineno;
 %token  simpleQuote
 %token  booleanLiteral
 %token  integerLiteral
-%token  indentifier
+%token  identifier
 
 
 %start program
 %%
                                                            
 program	     : mainClass classDeclaration  
-mainClass : class identifier openBraces public static 
-            void main openParentheses String openSquareBrackets closeSquareBrackets  
-            identifier openBraces Statement closeBraces closeBraces
+mainClass : kw_class identifier openBraces kw_public kw_static 
+            kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets  
+            identifier closeParentheses openBraces statement closeBraces closeBraces
 
-classDeclaration: class identifier parentClass openBraces varsDeclaration 
-                  methodDeclaration closeBraces |classDeclaration |
+classDeclaration: kw_class identifier parentClass openBraces varsDeclaration 
+                  methodDeclaration closeBraces classDeclaration |
 
-parentClass: extends identifier | 
+parentClass: kw_extends identifier | 
 
-varsDeclaration: type identifier point_virgule | varsDeclaration | 
+varsDeclaration: _type identifier Semicolon varsDeclaration | 
 
-methodDeclaration: public type identifier openParentheses functionVars 
+methodDeclaration: kw_public _type identifier openParentheses functionVars 
                    closeParentheses openBraces statement 
-                   return  expression point_virgule closeBraces
+                   kw_return  expression Semicolon closeBraces methodDeclaration |
                    
 functionVars: functionVariables |
-functionVariables :  type identifier | type identifier comma functionVariables
+functionVariables :  _type identifier | _type identifier comma functionVariables
 
 statement:  openBraces statement closeBraces |
-            if openParentheses expression closeParentheses statement else statement |
-            while openParentheses expression closeParentheses statement |
-            print openParentheses expression closeParentheses point_virgule |
-            identifier affectation expression point_virgule |
-            identifier openSquareBrackets expression closeSquareBrackets affectation expression point_virgule
+            kw_if openParentheses expression closeParentheses statement kw_else statement |
+            kw_while openParentheses expression closeParentheses statement |
+            kw_print openParentheses expression closeParentheses Semicolon |
+            identifier affectation expression Semicolon |
+            identifier openSquareBrackets expression closeSquareBrackets affectation expression Semicolon|
 
 expression : expression operator expression|
              expression openSquareBrackets expression closeSquareBrackets |
-             expression dot length |
+             expression dot kw_length |
              expression dot identifier openParentheses expression anotherExpression  |
-             integerLiteral point_virgule |
-             booleanLiteral point_virgule |
-             indentifier |
-             this |
-             new identifier openParentheses closeParentheses |
+             integerLiteral Semicolon |
+             booleanLiteral Semicolon |
+             identifier |
+             kw_this |
+             kw_new identifier openParentheses closeParentheses |
              notOperator expression |
              openParentheses expression closeParentheses  
 
@@ -92,7 +95,7 @@ anotherExpression: comma expression anotherExpression |
 int yyerror(char const *msg) {
        
 	
-	fprintf(stderr, "%s %d\n", msg,yylineno);
+	fprintf(stderr, "erreur ligne %d : %s\n", nbLigne, msg);
 	return 0;
 	
 	
@@ -104,5 +107,10 @@ main()
 {
  yyparse();
  
- 
 }
+int yywrap()
+{
+	return(1);
+}
+  
+     

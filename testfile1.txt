@@ -1,10 +1,6 @@
-int a, b, c;
-int d[];
-int efg = 5;
 
 class A{
-  boolean is;
-  void check()
+  int check()
   {
     d="gsodkg";
   }
