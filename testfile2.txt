@@ -1,43 +1,33 @@
-class Main{
-    
 
-
-    public
-     static 
-     void
-      main
-      (
-          String[]
-           a)
-           {
-
-
-
-        System.out.println(a);
+class fact {
+    public static void main (String [] x){
+        
     }
 }
 
-class Operations {
-    // a function that sums two numbers a and b
-    public int somme(int a,int b){
-        return a+b;
+class djeja {
+    public int child(String r)
+    {
+       int a =5 ;
+        return b;
     }
-    /*
-      This function divides a/b
-      verifies that b is not 0
-    */
-    public int division
-    (
-        int a
-        ,int b
-        )
-        {
-        if(b==0){
-            System.out.println("Impossible! b should not be zero!");
-            return 0;
-        }
-        else {
-            return a/b;
-        }
+        public int child(String r)
+    {
+       int a =5 ;
+        return b;
+    }
+}
+
+
+class djeja {
+    public int child(String r)
+    {
+       int a =5 ;
+        return b;
+    }
+        public int child(String r)
+    {
+       int a =5 ;
+        return b;
     }
 }

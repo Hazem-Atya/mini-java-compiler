@@ -60,16 +60,25 @@ classDeclaration: kw_class identifier parentClass openBraces varsDeclaration
 
 parentClass: kw_extends identifier | 
 
-varsDeclaration: _type identifier Semicolon varsDeclaration | 
-
-methodDeclaration: kw_public _type identifier openParentheses functionVars 
+identifierOrNumber: identifier | integerLiteral
+varsDeclaration: typeDeclaration identifier Semicolon varsDeclaration | 
+                typeDeclaration identifier affectation identifierOrNumber Semicolon varsDeclaration |
+typeDeclaration : _type | kw_String
+methodDeclaration: kw_public typeDeclaration identifier openParentheses functionVars 
                    closeParentheses openBraces statement 
                    kw_return  expression Semicolon closeBraces methodDeclaration |
+                   kw_public typeDeclaration identifier openParentheses  
+                   closeParentheses openBraces  
+                   closeBraces methodDeclaration  |
+
+
                    
 functionVars: functionVariables |
-functionVariables :  _type identifier | _type identifier comma functionVariables
+functionVariables :  typeDeclaration identifier | typeDeclaration identifier comma functionVariables 
 
-statement:  openBraces statement closeBraces |
+statement:  
+            varsDeclaration | 
+            openBraces statement closeBraces |
             kw_if openParentheses expression closeParentheses statement kw_else statement |
             kw_while openParentheses expression closeParentheses statement |
             kw_print openParentheses expression closeParentheses Semicolon |
@@ -86,7 +95,7 @@ expression : expression operator expression|
              kw_this |
              kw_new identifier openParentheses closeParentheses |
              notOperator expression |
-             openParentheses expression closeParentheses  
+             openParentheses expression closeParentheses  | 
 
 anotherExpression: comma expression anotherExpression | 
 
@@ -106,10 +115,11 @@ extern FILE *yyin;
 main()
 {
  yyparse();
- 
 }
 int yywrap()
 {
+     printf("Code compiled successfully");
+
 	return(1);
 }
   

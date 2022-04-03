@@ -2,26 +2,28 @@ import tkinter as tk
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from tkcode import CodeEditor
 from tkinter import ttk
+import os
+import subprocess
+
+
+fileAllPath = ""
 
 
 def open_file():
     """Open a file for editing."""
     filepath = askopenfilename(
-        filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")]
+        filetypes=[("Java Files", "*.java"), ("Java Files", "*.*")]
     )
     if not filepath:
         return
-    #txt_edit.delete(1.0, tk.END)
-    #txt_edit.forget(tab_1)
+    # txt_edit.delete(1.0, tk.END)
+    # txt_edit.forget(tab_1)
     with open(filepath, "r") as input_file:
         text = input_file.read()
-        code_editor.content =text
+        code_editor.content = text
         txt_edit.add(tab_1, text=filepath)
-
-
-
-
-
+    global fileAllPath
+    fileAllPath = filepath
     window.title(f"Mini java compiler - {filepath}")
 
 
@@ -37,17 +39,25 @@ def save_file():
         text = code_editor.content
         output_file.write(text)
     txt_edit.add(tab_1, text=filepath)
+    global fileAllPath
+    fileAllPath = filepath
     window.title(f"Mini java compiler - {filepath}")
 
 
 def compileFile():
-    print("The file is being compiled")
+    if(fileAllPath == ""):
+        save_file()
+    file_to_compile = open(fileAllPath,"r")
+    os.system("a.exe < "+file_to_compile.name +" 2> output.txt")
+    # os.startfile("D:\\OneDrive - Ministere de l'Enseignement Superieur et de la Recherche Scientifique\\GL4\Semestre2\\Compilation\\TP\\mini_java_compiler\\GUI\\a.exe")
+     
+
 
 
 window = tk.Tk()
 window.title("Mini java compiler")
-window.rowconfigure(0, minsize=600, weight=1)
-window.columnconfigure(1, minsize=600, weight=1)
+window.rowconfigure(0, minsize=400, weight=1)
+window.columnconfigure(1, minsize=400, weight=1)
 
 txt_edit = tk.Text(window)
 fr_buttons = tk.Frame(window, relief=tk.RAISED, bd=2)
@@ -56,11 +66,11 @@ btn_save = tk.Button(fr_buttons, text="Save As...", command=save_file)
 btn_compile = tk.Button(fr_buttons, text="Compile", command=compileFile)
 
 btn_open.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
-btn_save.grid(row=1, column=0, sticky="ew", padx=5)
+btn_save.grid(row=1, column=0, sticky="ew", padx=5,pady=5)
 btn_compile.grid(row=2, column=0, sticky="ew", padx=5)
 
 fr_buttons.grid(row=0, column=0, sticky="ns")
-#txt_edit.grid(row=0, column=1, sticky="nsew")
+# txt_edit.grid(row=0, column=1, sticky="nsew")
 
 
 
@@ -70,11 +80,11 @@ txt_edit.add(tab_1, text='')
 txt_edit.grid(row="0", column=1, sticky="nsew")
 code_editor = CodeEditor(
     tab_1,
-    width=99,
-    height=30,
+    width=60,
+    height=20,
     language="java",
     background="black",
-    highlighter="mariana",
+    highlighter="monokai",
     font="Consolas",
     autofocus=True,
     blockcursor=True,

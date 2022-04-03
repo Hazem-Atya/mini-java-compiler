@@ -25,8 +25,8 @@ COMMENT_LINE        "//"
 identifier         ([A-Za-z_][A-Za-z0-9_]*)
 integerLiteral                          (("-")?{number}*)
 booleanLiteral                          "true"|"false"
-type                 {primitiveType}|array
-primitiveType              "boolean"|"int"|"float"
+type                 {primitiveType}|array 
+primitiveType              "boolean"|"int"|"float" 
 array             ({primitiveType}{delim}+{openSquareBrackets}{delim*}{closeSquareBrackets})
 
 
@@ -48,9 +48,10 @@ array             ({primitiveType}{delim}+{openSquareBrackets}{delim*}{closeSqua
 "this"                    return kw_this;
 "new"                     return kw_new;
 "length"                  return kw_length;
-
-{type}                              return _type;
 "String"                    return kw_String;
+
+
+{type}  return _type;
 {openParentheses}                       return openParentheses;
 {closeParentheses}                      return closeParentheses;
 {openSquareBrackets}                    return openSquareBrackets;
