@@ -50,11 +50,19 @@ def compileFile():
     file_to_compile = open(fileAllPath,"r")
     os.system("a.exe < "+file_to_compile.name +" 2> output.txt")
     # os.startfile("D:\\OneDrive - Ministere de l'Enseignement Superieur et de la Recherche Scientifique\\GL4\Semestre2\\Compilation\\TP\\mini_java_compiler\\GUI\\a.exe")
-     
+    output = open("output.txt","r")
+    terminal.delete(1.0, tk.END)
+    with open("output.txt", "r") as input_file:
+        text = input_file.read()
+        terminal.insert(tk.END, text)
+
 
 
 
 window = tk.Tk()
+
+window.geometry("1000x700+250+50")
+
 window.title("Mini java compiler")
 window.rowconfigure(0, minsize=400, weight=1)
 window.columnconfigure(1, minsize=400, weight=1)
@@ -71,6 +79,11 @@ btn_compile.grid(row=2, column=0, sticky="ew", padx=5)
 
 fr_buttons.grid(row=0, column=0, sticky="ns")
 # txt_edit.grid(row=0, column=1, sticky="nsew")
+terminal = tk.Text(window)
+# terminal.config(state='disabled')
+# we add it to the grid
+terminal.grid(row=1, column=1, sticky="nsew")
+# ********
 
 
 
