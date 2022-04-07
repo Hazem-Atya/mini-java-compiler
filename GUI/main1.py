@@ -52,8 +52,6 @@ def compileFile():
     # os.startfile("D:\\OneDrive - Ministere de l'Enseignement Superieur et de la Recherche Scientifique\\GL4\Semestre2\\Compilation\\TP\\mini_java_compiler\\GUI\\a.exe")
      
 
-
-
 window = tk.Tk()
 window.title("Mini java compiler")
 window.rowconfigure(0, minsize=400, weight=1)

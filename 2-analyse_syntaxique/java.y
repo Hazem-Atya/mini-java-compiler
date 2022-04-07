@@ -5,7 +5,7 @@
 
 extern int nbLigne;
 
-
+int err= 0;
 int yyerror(char const * msg);	
 int yylex();
 
@@ -50,13 +50,51 @@ int yylex();
 %start program
 %%
                                                            
-program	     : mainClass classDeclaration  
-mainClass : kw_class identifier openBraces kw_public kw_static 
-            kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets  
+program	  : mainClass classDeclaration
+
+mainClass : kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
             identifier closeParentheses openBraces statement closeBraces closeBraces
+          | error identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le mot cle 'class' est manquant"); }
+          | kw_class error openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror (" le nom du classe est manquant"); }
+	  | kw_class identifier error kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("'{' expected"); }
+          | kw_class identifier openBraces error kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le mot cle 'public' est manquant"); }
+          | kw_class identifier openBraces kw_public error kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le mot cle 'static' est manquant"); }
+          | kw_class identifier openBraces kw_public kw_static error kw_main openParentheses error openSquareBrackets closeSquareBrackets
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le type de la methode est manquant"); }
+ 	  | kw_class identifier openBraces kw_public kw_static kw_void error openParentheses kw_String openSquareBrackets closeSquareBrackets
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("la methode main est introuvable"); }
+         | kw_class identifier openBraces kw_public kw_static kw_void kw_main error kw_String openSquareBrackets closeSquareBrackets
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("'(' expected"); }
+          | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String error closeSquareBrackets
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("'[' expected"); }
+          | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets error
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("']' expected"); }
+          | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
+            error closeParentheses openBraces statement closeBraces closeBraces {yyerror ("nom du parametre manquant"); }
+          | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses error openSquareBrackets closeSquareBrackets
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le type du parametre manquant"); }
+          | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
+            identifier error openBraces statement closeBraces closeBraces {yyerror ("')' expected"); }
+          | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
+            identifier closeParentheses error statement closeBraces closeBraces {yyerror ("'{' expected"); }
+          | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
+            identifier closeParentheses openBraces error closeBraces closeBraces {yyerror ("la fonction main est vide"); }
+	  | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
+            identifier closeParentheses openBraces statement error closeBraces {yyerror ("'}' expected"); }
+          | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
+            identifier closeParentheses openBraces statement closeBraces error {yyerror ("'}' expected"); }
+
 
 classDeclaration: kw_class identifier parentClass openBraces varsDeclaration 
-                  methodDeclaration closeBraces classDeclaration |
+                  methodDeclaration closeBraces classDeclaration
+                | error identifier parentClass openBraces varsDeclaration
+                  methodDeclaration closeBraces classDeclaration {yyerror ("'class' expected"); }
+                |
 
 parentClass: kw_extends identifier | 
 
@@ -99,25 +137,25 @@ expression : expression operator expression|
 
 anotherExpression: comma expression anotherExpression | 
 
-%% 
+%%
 
 int yyerror(char const *msg) {
-       
-	
+	err = 1;
+	if(msg != "syntax error")
 	fprintf(stderr, "erreur ligne %d : %s\n", nbLigne, msg);
 	return 0;
-	
-	
 }
 
 extern FILE *yyin;
 
-main()
+int main()
 {
  yyparse();
+ return 1;
 }
 int yywrap()
 {
+     if(err==0)
      printf("Code compiled successfully");
 
 	return(1);

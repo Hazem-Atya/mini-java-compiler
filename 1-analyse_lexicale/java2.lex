@@ -48,7 +48,7 @@ array             ({primitiveType}{delim}+{openSquareBrackets}{delim*}{closeSqua
 "this"                    return kw_this;
 "new"                     return kw_new;
 "length"                  return kw_length;
-"String"                    return kw_String;
+"String"                  return kw_String;
 
 
 {type}  return _type;
@@ -97,5 +97,3 @@ array             ({primitiveType}{delim}+{openSquareBrackets}{delim*}{closeSqua
 
 .                                     { printf("\n unexpected character on line %d \n",  nbLigne);   }
 %%
-
-
