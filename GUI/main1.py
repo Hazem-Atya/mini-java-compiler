@@ -45,11 +45,16 @@ def save_file():
 
 
 def compileFile():
+    # if there is no path, save a new file (save as)
     if(fileAllPath == ""):
         save_file()
+    # if we're editing an existing file, save changes before compiling
+    f = open(fileAllPath, "w")
+    f.write(code_editor.content)
+    f.close()
+    
     file_to_compile = open(fileAllPath,"r")
     os.system("a.exe < "+file_to_compile.name +" 2> output.txt")
-    # os.startfile("D:\\OneDrive - Ministere de l'Enseignement Superieur et de la Recherche Scientifique\\GL4\Semestre2\\Compilation\\TP\\mini_java_compiler\\GUI\\a.exe")
     output = open("output.txt","r")
     terminal.delete(1.0, tk.END)
     with open("output.txt", "r") as input_file:
