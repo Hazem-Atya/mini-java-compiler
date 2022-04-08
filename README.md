@@ -31,7 +31,7 @@
  ## Run the app:
 Open a terminal in the main folder and run these commands:
 ```
-flex j
+flex 1-analyse_lexicale/java2.lex
 bison -d 2-analyse_syntaxique/java.y 
 gcc java.tab.c lex.yy.c 
 python GUI/main1.py
