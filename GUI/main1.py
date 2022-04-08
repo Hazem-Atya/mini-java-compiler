@@ -54,7 +54,6 @@ def compileFile():
     f.close()
 
     file_to_compile = open(fileAllPath, "r")
-    #os.system("Get-Content "+ file_to_compile.name + "./a.exe" )
     os.system("a.exe < "+file_to_compile.name + " 2> output.txt")
     output = open("output.txt", "r")
     terminal.delete(1.0, tk.END)
@@ -63,7 +62,7 @@ def compileFile():
         if text:
             terminal.insert(tk.END, text)
         else:
-            terminal.insert(tk.END,"Code compiled successfully")
+            terminal.insert(tk.END,"Code compiled successfully \n")
 
 window = tk.Tk()
 

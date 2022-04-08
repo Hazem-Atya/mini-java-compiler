@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6d947e22-3e6e-41b3-aa6e-89f62524df32" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/2-analyse_syntaxique/java.y" beforeDir="false" afterPath="$PROJECT_DIR$/2-analyse_syntaxique/java.y" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/main1.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/main1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/output.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/testfile.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -218,7 +222,8 @@
       <workItem from="1649362128943" duration="12926000" />
       <workItem from="1649390565283" duration="673000" />
       <workItem from="1649392117950" duration="37000" />
-      <workItem from="1649392158604" duration="1211000" />
+      <workItem from="1649392158604" duration="3892000" />
+      <workItem from="1649401177393" duration="452000" />
     </task>
     <servers />
   </component>
@@ -241,6 +246,6 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/mini_java_compiler$main1.coverage" NAME="main1 Coverage Results" MODIFIED="1649393019008" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI" />
+    <SUITE FILE_PATH="coverage/mini_java_compiler$main1.coverage" NAME="main1 Coverage Results" MODIFIED="1649401180844" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI" />
   </component>
 </project>

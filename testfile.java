@@ -1,30 +1,34 @@
 class fact {
-public static void  (String [] x){
-
+public static void main (String [] x){
     }
 }
 
 class classA {
-    public int classAa(String r)
+    public int methodeA(String r)
     {
-       int a =5 ;
-        return b;
+return a;
     }
 
 }
 
 
 class classB {
-    public int classBa(String r)
+    public int methodeB(int r, int c)
     {
        int a =5 ;
-        return b;
-
-        public int child(String r)
+return a;
+    }
+       public  int methodeB2(int r)
     {
        int a =5 ;
-        return b;
+return a;
+       
     }
 }
+
+
+
+
+
 
 
