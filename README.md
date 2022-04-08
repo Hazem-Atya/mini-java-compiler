@@ -1,13 +1,13 @@
 # mini-java-compiler
  <ol>
     <li>
-      <a href="#about-the-repo">About The Project</a>
+      <a href="#about-the-repo">About The repo</a>
     </li>
       <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#setup">Setup</a>
     </li>
       <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#run-the-app">Run the app</a>
     </li>
   </ol>
   
@@ -20,10 +20,18 @@
   * Tkinter: A python package for GUI programming
   * Tkcode: Code block and code editor widget for tkinter with syntax highlighting 
 
-## Setup 
-
-* [Download bison](http://downloads.sourceforge.net/gnuwin32/bison-2.4.1-setup.exe) and install it
-* Install tkcode:
+  ## Setup 
+  * [Download flex](http://gnuwin32.sourceforge.net/downlinks/flex.php) and install it
+  * [Download bison](http://downloads.sourceforge.net/gnuwin32/bison-2.4.1-setup.exe) and install it
+  * Install tkcode:
 ``` 
   pip3 install tkcode
 ``` 
+ ## Run the app:
+Open a terminal in the main folder and run these commands:
+```
+flex j
+bison -d 2-analyse_syntaxique/java.y 
+gcc java.tab.c lex.yy.c 
+python GUI/main1.py
+```
