@@ -13,6 +13,7 @@
   
   ## About the repo
   This repository contains a mini java compiler with w simple graphical user interface for code editing.
+  The document TP_2022.doc contains the grammar and the rules.
   Used technologies:
   * Flex: Fast lexical analyzer generator, used for Lexical analysis
   * Yacc Yet Another Compiler-Compiler, used for Syntactic analysis
