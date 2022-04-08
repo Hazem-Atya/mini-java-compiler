@@ -1,5 +1,6 @@
 class fact {
 public static void main (String [] x){
+
     }
 }
 
@@ -25,6 +26,14 @@ return a;
        
     }
 }
+
+
+
+
+
+
+
+
 
 
 

@@ -53,56 +53,56 @@ program	  : mainClass classDeclaration
 mainClass : kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
             identifier closeParentheses openBraces statement closeBraces closeBraces
           | error identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le mot cle 'class' est manquant"); }
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le mot cle 'class' est manquant");  YYABORT}
           | kw_class error openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror (" le nom du classe est manquant"); }
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror (" le nom du classe est manquant"); YYABORT }
 	  | kw_class identifier error kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("'{' expected"); }
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("'{' expected"); YYABORT }
           | kw_class identifier openBraces error kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le mot cle 'public' est manquant"); }
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le mot cle 'public' est manquant"); YYABORT }
           | kw_class identifier openBraces kw_public error kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le mot cle 'static' est manquant"); }
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le mot cle 'static' est manquant"); YYABORT }
           | kw_class identifier openBraces kw_public kw_static error kw_main openParentheses error openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le type de la methode est manquant"); }
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le type de la methode est manquant"); YYABORT}
  	  | kw_class identifier openBraces kw_public kw_static kw_void error openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("la methode main est introuvable"); }
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("la methode main est introuvable"); YYABORT}
          | kw_class identifier openBraces kw_public kw_static kw_void kw_main error kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("'(' expected"); }
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("'(' expected"); YYABORT }
           | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String error closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("'[' expected"); }
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("'[' expected"); YYABORT}
           | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets error
             identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("']' expected"); YYABORT }
           | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            error closeParentheses openBraces statement closeBraces closeBraces {yyerror ("invalid parameter syntax"); }
+            error closeParentheses openBraces statement closeBraces closeBraces {yyerror ("invalid parameter syntax"); YYABORT}
           | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses error openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("invalid parameter syntax"); }
+            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("invalid parameter syntax"); YYABORT }
           | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier error openBraces statement closeBraces closeBraces {yyerror ("')' expected"); }
+            identifier error openBraces statement closeBraces closeBraces {yyerror ("')' expected"); YYABORT}
           | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses error statement closeBraces closeBraces {yyerror ("'{' expected"); }
+            identifier closeParentheses error statement closeBraces closeBraces {yyerror ("'{' expected"); YYABORT}
           | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces error closeBraces closeBraces {yyerror ("la fonction main est vide"); }
+            identifier closeParentheses openBraces error closeBraces closeBraces {yyerror ("la fonction main est vide"); YYABORT }
 	  | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement error closeBraces {yyerror ("'}' expected"); }
+            identifier closeParentheses openBraces statement error closeBraces {yyerror ("'}' expected"); YYABORT}
           | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces error {yyerror ("'}' expected"); }
+            identifier closeParentheses openBraces statement closeBraces error {yyerror ("'}' expected"); YYABORT}
 
 
 classDeclaration: kw_class identifier parentClass openBraces varsDeclaration 
                   methodDeclaration closeBraces classDeclaration
                 | error identifier parentClass openBraces varsDeclaration
-                  methodDeclaration closeBraces classDeclaration {yyerror ("'class' expected"); }
+                  methodDeclaration closeBraces classDeclaration {yyerror ("'class' expected"); YYABORT }
                 | kw_class error parentClass openBraces varsDeclaration
-                  methodDeclaration closeBraces classDeclaration {yyerror ("class name expected"); }
+                  methodDeclaration closeBraces classDeclaration {yyerror ("class name expected"); YYABORT}
                 | kw_class identifier parentClass error varsDeclaration
-                  methodDeclaration closeBraces classDeclaration {yyerror ("'{' expected"); }
+                  methodDeclaration closeBraces classDeclaration {yyerror ("'{' expected"); YYABORT }
                 | kw_class identifier parentClass openBraces varsDeclaration
-                  methodDeclaration error classDeclaration {yyerror ("'}' expected"); }
+                  methodDeclaration error classDeclaration {yyerror ("'}' expected"); YYABORT}
                 |
 
 parentClass: kw_extends identifier
-	   | error identifier {yyerror ("'extends' expected"); }
-	   | kw_extends error {yyerror ("invalid Parent class name "); }
+	   | error identifier {yyerror ("'extends' expected"); YYABORT }
+	   | kw_extends error {yyerror ("invalid Parent class name "); YYABORT}
 	   |
 
 identifierOrNumber: identifier | integerLiteral
@@ -165,12 +165,10 @@ functionVariables :  typeDeclaration identifier | typeDeclaration identifier com
 | typeDeclaration identifier error functionVariables {yyerror ("',' expected"); YYABORT}
 
 statement:  
-            varsDeclaration | 
-            openBraces statement closeBraces|
-            error statement closeBraces {yyerror ("'{' expected"); YYABORT}|
-            openBraces statement error {yyerror ("'}' expected"); YYABORT} |
+            varsDeclaration statement |
+            openBraces statement closeBraces |
             kw_if openParentheses expression closeParentheses statement kw_else statement |
-            error openParentheses expression closeParentheses statement kw_else statement {yyerror ("invalid expression"); YYABORT }|
+            error openParentheses expression closeParentheses statement kw_else statement {yyerror ("invalid expression");  YYABORT }|
             kw_if error expression closeParentheses statement kw_else statement {yyerror ("'(' expected from statement if"); YYABORT } |
             kw_if openParentheses expression error statement kw_else statement {yyerror ("')' expected"); } |
             kw_if openParentheses expression closeParentheses statement error statement {yyerror ("invalid expression"); YYABORT } |
@@ -178,31 +176,68 @@ statement:
             error openParentheses expression closeParentheses statement {yyerror ("invalid expression"); YYABORT} |
             kw_while error expression closeParentheses statement {yyerror ("'(' expected from statement while"); YYABORT }  |
             kw_while openParentheses expression error statement {yyerror ("')' expected"); }|
-            kw_print openParentheses expression closeParentheses Semicolon |
+            kw_print openParentheses expression closeParentheses Semicolon statement |
             error openParentheses expression closeParentheses Semicolon {yyerror ("invalid expression"); YYABORT }|
             kw_print error expression closeParentheses Semicolon {yyerror ("'(' expected from statement print"); YYABORT } |
             kw_print openParentheses expression error Semicolon {yyerror ("')' expected"); YYABORT}|
             kw_print openParentheses expression closeParentheses error {yyerror ("';' expected"); YYABORT}|
-            identifier affectation expression Semicolon |
+            identifier affectation expression Semicolon  statement|
             error affectation expression Semicolon {yyerror ("invalid expression"); YYABORT}|
             identifier error expression Semicolon {yyerror ("invalid expression"); YYABORT } |
             identifier affectation expression error {yyerror ("';' expected"); YYABORT } |
-            identifier openSquareBrackets expression closeSquareBrackets affectation expression Semicolon|
+            identifier openSquareBrackets expression closeSquareBrackets affectation expression Semicolon statement|
             error openSquareBrackets expression closeSquareBrackets affectation expression Semicolon {yyerror ("invalid expression"); YYABORT } |
             identifier error expression closeSquareBrackets affectation expression Semicolon {yyerror ("'[' expected"); YYABORT} |
             identifier openSquareBrackets expression error affectation expression Semicolon {yyerror ("']' expected"); YYABORT} |
             identifier openSquareBrackets expression closeSquareBrackets error expression Semicolon {yyerror ("'=' expected"); YYABORT } |
             identifier openSquareBrackets expression closeSquareBrackets affectation expression error {yyerror ("';' expected"); YYABORT} |
-	     kw_new identifier openParentheses closeParentheses Semicolon |
-             kw_new identifier error closeParentheses Semicolon{yyerror ("'(' expected from new"); YYABORT} |
-             kw_new identifier openParentheses error Semicolon {yyerror ("')' expected"); YYABORT }|
-             kw_new identifier openParentheses closeParentheses error {yyerror ("';' expected"); YYABORT }|
+	      identifier dot identifier openParentheses methodCallParam closeParentheses
+	      Semicolon statement|
+	      identifier openParentheses methodCallParam closeParentheses
+	      Semicolon statement|
+	      error openParentheses methodCallParam closeParentheses Semicolon statement {yyerror ("invalid expression "); YYABORT}|
+	      identifier  error  methodCallParam closeParentheses
+	      Semicolon statement {yyerror ("invalid expression , '(' expected"); YYABORT}|
+	      identifier  openParentheses  methodCallParam error
+	      Semicolon statement {yyerror ("invalid expression , ')' expected"); YYABORT}|
+	      identifier  openParentheses  methodCallParam closeParentheses
+	      error statement {yyerror ("invalid expression , ';' expected"); YYABORT}|
+	      error dot identifier openParentheses methodCallParam closeParentheses
+	      Semicolon statement {yyerror ("invalid expression "); YYABORT}|
+	      identifier dot error openParentheses methodCallParam closeParentheses
+	      Semicolon statement {yyerror ("invalid expression "); YYABORT}|
+	      identifier dot identifier error methodCallParam closeParentheses
+	      Semicolon statement {yyerror ("'(' expected "); YYABORT}|
+	      identifier dot identifier openParentheses methodCallParam error
+	      Semicolon statement {yyerror ("')' expected "); YYABORT}|
+	      identifier dot identifier openParentheses methodCallParam closeParentheses
+	      error statement {yyerror ("';' expected "); YYABORT}|
+	     kw_new identifier openParentheses closeParentheses Semicolon statement|
+	     kw_new identifier openParentheses closeParentheses dot identifier openParentheses methodCallParam closeParentheses
+	      Semicolon statement|
+	      kw_new identifier openParentheses closeParentheses error identifier
+	      openParentheses methodCallParam closeParentheses Semicolon statement {yyerror ("invalid expression "); YYABORT}|
+	         kw_new identifier openParentheses closeParentheses dot error
+	      openParentheses methodCallParam closeParentheses Semicolon statement {yyerror ("invalid expression "); YYABORT}|
+	         kw_new identifier openParentheses closeParentheses dot identifier
+	      error methodCallParam closeParentheses Semicolon statement {yyerror ("'(' expected"); YYABORT}|
+	     kw_new identifier openParentheses closeParentheses dot identifier
+	     openParentheses methodCallParam error Semicolon statement {yyerror ("')' expected"); YYABORT}|
+	     kw_new identifier openParentheses closeParentheses dot identifier
+	     openParentheses methodCallParam closeParentheses error statement {yyerror ("';' expected"); YYABORT}|
+             kw_new identifier error closeParentheses Semicolon statement{yyerror ("'(' expected from new"); YYABORT} |
+             kw_new identifier openParentheses error Semicolon statement{yyerror ("')' expected"); YYABORT }|
+             kw_new identifier openParentheses closeParentheses error statement {yyerror ("';' expected"); YYABORT }|
+methodCallParam : methodCallParams |
+methodCallParams : identifierOrNumber comma methodCallParams | identifierOrNumber
+
 expression : expression operator expression|
              expression openSquareBrackets expression closeSquareBrackets |
              expression error expression closeSquareBrackets {yyerror ("'[' expected"); YYABORT } |
              expression openSquareBrackets expression error {yyerror ("']' expected"); YYABORT } |
              expression dot kw_length |
              expression dot identifier openParentheses expression anotherExpression  |
+             expression dot identifier dot identifier openParentheses expression anotherExpression  |
              integerLiteral Semicolon |
              integerLiteral error {yyerror ("';' expected"); YYABORT} |
              booleanLiteral Semicolon |
@@ -210,6 +245,7 @@ expression : expression operator expression|
              identifier |
              kw_this |
              kw_new identifier openParentheses closeParentheses  |
+             kw_new identifier openParentheses closeParentheses dot identifier openParentheses identifierOrNumber closeParentheses |
              kw_new identifier error closeParentheses {yyerror ("'(' expected from new"); YYABORT} |
              kw_new identifier openParentheses error  {yyerror ("')' expected"); YYABORT }|
              notOperator expression |

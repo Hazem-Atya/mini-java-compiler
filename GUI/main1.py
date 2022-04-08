@@ -5,7 +5,6 @@ from tkinter import ttk
 import os
 import subprocess
 
-
 fileAllPath = ""
 
 
@@ -46,7 +45,7 @@ def save_file():
 
 def compileFile():
     # if there is no path, save a new file (save as)
-    if(fileAllPath == ""):
+    if (fileAllPath == ""):
         save_file()
     # if we're editing an existing file, save changes before compiling
     f = open(fileAllPath, "w")
@@ -54,7 +53,7 @@ def compileFile():
     f.close()
 
     file_to_compile = open(fileAllPath, "r")
-    os.system("a.exe < "+file_to_compile.name + " 2> output.txt")
+    os.system("C:/Users/rihemebenhassan/Desktop/mini-java-compiler/a.exe < " + file_to_compile.name + " 2> output.txt")
     output = open("output.txt", "r")
     terminal.delete(1.0, tk.END)
     with open("output.txt", "r") as input_file:
@@ -62,7 +61,8 @@ def compileFile():
         if text:
             terminal.insert(tk.END, text)
         else:
-            terminal.insert(tk.END,"Code compiled successfully \n")
+            terminal.insert(tk.END, "Code compiled successfully \n")
+
 
 window = tk.Tk()
 
