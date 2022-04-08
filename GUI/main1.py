@@ -54,7 +54,7 @@ def compileFile():
     f.close()
 
     file_to_compile = open(fileAllPath, "r")
-    #os.system("Get-Content "+ file_to_compile.name + "./a.exe" )
+    # You may need to specify the absolute path of the executable file
     os.system("a.exe < "+file_to_compile.name + " 2> output.txt")
     output = open("output.txt", "r")
     terminal.delete(1.0, tk.END)
