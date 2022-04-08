@@ -52,15 +52,17 @@ def compileFile():
     f = open(fileAllPath, "w")
     f.write(code_editor.content)
     f.close()
-    
-    file_to_compile = open(fileAllPath,"r")
-    os.system("a.exe < "+file_to_compile.name +" 2> output.txt")
-    output = open("output.txt","r")
+
+    file_to_compile = open(fileAllPath, "r")
+    os.system("a.exe < "+file_to_compile.name + " 2> output.txt")
+    output = open("output.txt", "r")
     terminal.delete(1.0, tk.END)
     with open("output.txt", "r") as input_file:
         text = input_file.read()
-        terminal.insert(tk.END, text)
-
+        if text:
+            terminal.insert(tk.END, text)
+        else:
+            terminal.insert(tk.END,"Code compiled successfully")
 
 window = tk.Tk()
 
@@ -77,7 +79,7 @@ btn_save = tk.Button(fr_buttons, text="Save As...", command=save_file)
 btn_compile = tk.Button(fr_buttons, text="Compile", command=compileFile)
 
 btn_open.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
-btn_save.grid(row=1, column=0, sticky="ew", padx=5,pady=5)
+btn_save.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
 btn_compile.grid(row=2, column=0, sticky="ew", padx=5)
 
 fr_buttons.grid(row=0, column=0, sticky="ns")
@@ -87,7 +89,6 @@ terminal = tk.Text(window)
 # we add it to the grid
 terminal.grid(row=1, column=1, sticky="nsew")
 # ********
-
 
 
 txt_edit = ttk.Notebook(window)
@@ -106,7 +107,7 @@ code_editor = CodeEditor(
     blockcursor=True,
     insertofftime=0,
     padx=10,
-    pady=10,  
+    pady=10,
 )
 code_editor.pack(fill="both", expand=True)
 code_editor.content = """print("Hello World")"""
