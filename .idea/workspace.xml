@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6d947e22-3e6e-41b3-aa6e-89f62524df32" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/GUI/main1.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/main1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/output.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,7 +218,7 @@
       <workItem from="1649362128943" duration="12926000" />
       <workItem from="1649390565283" duration="673000" />
       <workItem from="1649392117950" duration="37000" />
-      <workItem from="1649392158604" duration="920000" />
+      <workItem from="1649392158604" duration="1211000" />
     </task>
     <servers />
   </component>

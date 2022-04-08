@@ -55,7 +55,7 @@ def compileFile():
 
     file_to_compile = open(fileAllPath, "r")
     #os.system("Get-Content "+ file_to_compile.name + "./a.exe" )
-    os.system("C:/Users/rihemebenhassan/Desktop/mini-java-compiler/a.exe < "+file_to_compile.name + " 2> output.txt")
+    os.system("a.exe < "+file_to_compile.name + " 2> output.txt")
     output = open("output.txt", "r")
     terminal.delete(1.0, tk.END)
     with open("output.txt", "r") as input_file:
