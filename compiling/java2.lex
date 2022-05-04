@@ -5,11 +5,12 @@
  #include <stdlib.h>	
 #include <string.h>
 #include <math.h>
- #include "java.tab.h"	                                                                         	
+ #include "syntax.tab.h"	                                                                         	
  /* Local stuff we need here... */	
 #include <math.h>	 			
 
-	int nbLigne =1;
+extern char nom[];
+int nbLigne =1;
 %}
 delim            ([ \t]|(" ")) 
 number           [0-9]
@@ -22,12 +23,13 @@ openBraces                              (\{)
 closeBraces                             (\})
 COMMENT_LINE        "//"
 
-identifier         ([A-Za-z_][A-Za-z0-9_]*)
+identifier         ([A-Za-z_][A-Za-z0-9_]*) 
 integerLiteral                          (("-")?{number}*)
 booleanLiteral                          "true"|"false"
 type                 {primitiveType}|array 
 primitiveType              "boolean"|"int"|"float" 
 array             ({primitiveType}{delim}+{openSquareBrackets}{delim*}{closeSquareBrackets})
+oper           "&&"|"<"|"+"|"-"|"*"     
 
 
 %%
@@ -59,7 +61,7 @@ array             ({primitiveType}{delim}+{openSquareBrackets}{delim*}{closeSqua
 {openBraces}                            return openBraces;
 {closeBraces}                           return closeBraces;
 
-"&&"|"<"|"+"|"-"|"*"|"/"            return operator;
+{oper}                     return operator;
 "="                                     return affectation;
 "!"                                  return notOperator;
 "."                                     return dot;
@@ -72,7 +74,10 @@ array             ({primitiveType}{delim}+{openSquareBrackets}{delim*}{closeSqua
 
 {booleanLiteral}                        return booleanLiteral;
 {integerLiteral}                        return integerLiteral;
-{identifier}                            return identifier;
+{identifier}                            { 
+                                             strcpy(nom, yytext);
+                                             return identifier;
+                                        }
 
 
 \/\/.*                                     /* do nothing */   

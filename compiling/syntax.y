@@ -6,6 +6,7 @@
 extern int nbLigne;
 
 int err= 0;
+char nom [256];
 int yyerror(char const * msg);	
 int yylex();
 
@@ -51,7 +52,7 @@ int yylex();
 program	  : mainClass classDeclaration
 
 mainClass : kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces
+            identifier closeParentheses openBraces varsDeclaration statement closeBraces closeBraces
           | error identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
             identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le mot cle 'class' est manquant"); }
           | kw_class error openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
@@ -108,6 +109,7 @@ parentClass: kw_extends identifier
 identifierOrNumber: identifier | integerLiteral
 
 varsDeclaration: typeDeclaration identifier Semicolon varsDeclaration
+          | typeDeclaration openSquareBrackets closeSquareBrackets identifier Semicolon varsDeclaration
 	       | typeDeclaration identifier affectation identifierOrNumber Semicolon varsDeclaration
 	       | error identifier Semicolon varsDeclaration {yyerror ("invalid type declaration "); }
 	       | typeDeclaration error Semicolon varsDeclaration {yyerror ("invalid identifier declaration "); }
@@ -120,8 +122,10 @@ varsDeclaration: typeDeclaration identifier Semicolon varsDeclaration
 	       |
 typeDeclaration : _type | kw_String
 methodDeclaration: kw_public typeDeclaration identifier openParentheses functionVars 
-                   closeParentheses openBraces statement kw_return  expression Semicolon closeBraces methodDeclaration
-                 | kw_public typeDeclaration identifier openParentheses  closeParentheses openBraces closeBraces methodDeclaration
+                   closeParentheses openBraces varsDeclaration statement kw_return  expression Semicolon closeBraces methodDeclaration
+                 |kw_public typeDeclaration identifier openParentheses functionVars 
+                   closeParentheses openBraces varsDeclaration statement     closeBraces   {printf ("Line %d:return statement expected ",nbLigne); exit(0) } methodDeclaration 
+                 kw_public typeDeclaration identifier openParentheses  closeParentheses openBraces closeBraces methodDeclaration
                  | error typeDeclaration identifier openParentheses functionVars
                    closeParentheses openBraces statement kw_return  expression Semicolon closeBraces methodDeclaration
                    {yyerror ("'public' expected "); }
@@ -161,9 +165,9 @@ methodDeclaration: kw_public typeDeclaration identifier openParentheses function
 functionVars: functionVariables |
 functionVariables :  typeDeclaration identifier | typeDeclaration identifier comma functionVariables 
 
+
 statement:  
-            varsDeclaration | 
-            openBraces statement closeBraces|
+            openBraces statement closeBraces statement|
             error statement closeBraces {yyerror ("'{' expected"); }|
             openBraces statement error {yyerror ("'}' expected"); } |
             kw_if openParentheses expression closeParentheses statement kw_else statement |
@@ -175,12 +179,12 @@ statement:
             error openParentheses expression closeParentheses statement {yyerror ("invalid expression"); } |
             kw_while error expression closeParentheses statement {yyerror ("'(' expected"); }  |
             kw_while openParentheses expression error statement {yyerror ("')' expected"); }|
-            kw_print openParentheses expression closeParentheses Semicolon |
+            kw_print openParentheses expression closeParentheses Semicolon statement|
             error openParentheses expression closeParentheses Semicolon {yyerror ("invalid expression"); }|
             kw_print error expression closeParentheses Semicolon {yyerror ("'(' expected"); } |
             kw_print openParentheses expression error Semicolon {yyerror ("')' expected"); }|
             kw_print openParentheses expression closeParentheses error {yyerror ("';' expected"); }|
-            identifier affectation expression Semicolon |
+            identifier affectation expression Semicolon statement|
             error affectation expression Semicolon {yyerror ("invalid expression"); }|
             identifier error expression Semicolon {yyerror ("'=' expected"); } |
             identifier affectation expression error {yyerror ("';' expected"); } |
@@ -191,16 +195,17 @@ statement:
             identifier openSquareBrackets expression closeSquareBrackets error expression Semicolon {yyerror ("'=' expected"); } |
             identifier openSquareBrackets expression closeSquareBrackets affectation expression error {yyerror ("';' expected"); } |
 
-expression : expression operator expression|
-	     expression error expression {yyerror ("'operator' expected"); }|
+ booleanExpression: identifier operator identifier {yyerror ("OK!"); }
+expression : identifier operator identifier |
+	          expression error expression {yyerror ("'operator' expected"); }|
              expression openSquareBrackets expression closeSquareBrackets |
              expression error expression closeSquareBrackets {yyerror ("'[' expected"); } |
              expression openSquareBrackets expression error {yyerror ("']' expected"); } |
              expression dot kw_length |
              expression dot identifier openParentheses expression anotherExpression  |
-             integerLiteral Semicolon |
+             integerLiteral  |
              integerLiteral error {yyerror ("';' expected"); } |
-             booleanLiteral Semicolon |
+             booleanLiteral  |
              booleanLiteral error {yyerror ("';' expected"); } |
              identifier |
              kw_this |
@@ -220,9 +225,14 @@ anotherExpression: comma expression anotherExpression |
 int yyerror(char const *msg) {
 	err = 1;
 	if(msg == "syntax error")
-	fprintf(stderr, "erreur ligne %d :", nbLigne );
-	else
-	fprintf(stderr, msg);
+	  {
+     fprintf(stderr, "\nerreur ligne %d :", nbLigne );
+    }
+  else
+	{
+  fprintf(stderr, msg);
+  exit(0);
+  }
 	return 0;
 }
 

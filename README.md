@@ -20,7 +20,8 @@
   * Python3
   * Tkinter: A python package for GUI programming
   * Tkcode: Code block and code editor widget for tkinter with syntax highlighting 
-
+# Important Note:
+This mini compiler trets only the grammar explained [here](https://github.com/Hazem-Atya/mini-java-compiler/blob/main/TP_2022.doc)
   ## Setup 
   * [Download flex](http://gnuwin32.sourceforge.net/downlinks/flex.php) and install it
   * [Download bison](http://downloads.sourceforge.net/gnuwin32/bison-2.4.1-setup.exe) and install it
