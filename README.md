@@ -21,7 +21,7 @@
   * Tkinter: A python package for GUI programming
   * Tkcode: Code block and code editor widget for tkinter with syntax highlighting 
 # Important Note:
-This mini compiler trets only the grammar explained [here](https://github.com/Hazem-Atya/mini-java-compiler/blob/main/TP_2022.doc)
+This mini compiler treats only the grammar explained [here](https://github.com/Hazem-Atya/mini-java-compiler/blob/main/TP_2022.doc)
   ## Setup 
   * [Download flex](http://gnuwin32.sourceforge.net/downlinks/flex.php) and install it
   * [Download bison](http://downloads.sourceforge.net/gnuwin32/bison-2.4.1-setup.exe) and install it
@@ -30,10 +30,7 @@ This mini compiler trets only the grammar explained [here](https://github.com/Ha
   pip3 install tkcode
 ``` 
  ## Run the app:
-Open a terminal in the main folder and run these commands:
+Open a terminal in the main folder and run the script:
 ```
-flex 1-analyse_lexicale/java2.lex
-bison -d 2-analyse_syntaxique/java.y 
-gcc java.tab.c lex.yy.c 
-python GUI/main1.py
+./script.bash
 ```
