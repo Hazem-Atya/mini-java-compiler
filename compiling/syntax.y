@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "semantic.c"
 extern int nbLigne;
 
 int err= 0;
@@ -49,7 +49,7 @@ int yylex();
 %start program
 %%
                                                            
-program	  : mainClass classDeclaration
+program	  : mainClass classDeclaration 
 
 mainClass : kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
             identifier closeParentheses openBraces varsDeclaration statement closeBraces closeBraces
@@ -108,7 +108,7 @@ parentClass: kw_extends identifier
 
 identifierOrNumber: identifier | integerLiteral
 
-varsDeclaration: typeDeclaration identifier Semicolon varsDeclaration
+varsDeclaration: typeDeclaration identifier Semicolon varsDeclaration {{sayHello(nom);}}
           | typeDeclaration openSquareBrackets closeSquareBrackets identifier Semicolon varsDeclaration
 	       | typeDeclaration identifier affectation identifierOrNumber Semicolon varsDeclaration
 	       | error identifier Semicolon varsDeclaration {yyerror ("invalid type declaration "); }

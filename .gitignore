@@ -2,5 +2,7 @@
 *.h
 *.exe
 output.txt
-test.cmd
 .idea/*
+compiling/*.tab.*
+compiling/*.yy.c
+compiling/output.txt
