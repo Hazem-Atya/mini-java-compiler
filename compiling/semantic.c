@@ -31,8 +31,13 @@ void exitScope()
     printf("Current scope = %d\n", currentScope);
 }
 
+
 int searchIdentifier(char* name){
-    for (int i =0;i<)
+    for (int i =0;i<nbIdentifiers;i++){
+        if((identifiers[i].name==name)&&(identifiers[i].scope==currentScope)){
+            return 1;
+        }
+    }
 }
 void addVariable(){
 
