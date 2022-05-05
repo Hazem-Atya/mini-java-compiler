@@ -59,10 +59,11 @@ def compileFile():
     os.system("a.exe < "+file_to_compile.name + " 1>>output.txt")
     output = open("output.txt", "r")
     terminal.delete(1.0, tk.END)
+    newLines="\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     with open("output.txt", "r") as input_file:
         text = input_file.read()
         if text:
-            terminal.insert(tk.END, text)
+            terminal.insert(tk.END, text+newLines)
         else:
             terminal.insert(tk.END,"Code compiled successfully")
 
@@ -86,7 +87,9 @@ btn_compile.grid(row=2, column=0, sticky="ew", padx=5)
 
 fr_buttons.grid(row=0, column=0, sticky="ns")
 # txt_edit.grid(row=0, column=1, sticky="nsew")
+
 terminal = tk.Text(window)
+
 # terminal.config(state='disabled')
 # we add it to the grid
 terminal.grid(row=1, column=1, sticky="nsew")

@@ -10,7 +10,10 @@
 #include <math.h>	 			
 
 extern char nom[];
+
+
 int nbLigne =1;
+
 %}
 delim            ([ \t]|(" ")) 
 number           [0-9]
@@ -58,8 +61,14 @@ oper           "&&"|"<"|"+"|"-"|"*"
 {closeParentheses}                      return closeParentheses;
 {openSquareBrackets}                    return openSquareBrackets;
 {closeSquareBrackets}                   return closeSquareBrackets;
-{openBraces}                            return openBraces;
-{closeBraces}                           return closeBraces;
+{openBraces}                           { 
+                                        enterScope();
+                                        return openBraces;
+                                       }
+{closeBraces}                           {
+                                             exitScope();
+                                             return closeBraces;
+                                        }
 
 {oper}                     return operator;
 "="                                     return affectation;
