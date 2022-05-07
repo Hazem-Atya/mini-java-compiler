@@ -45,6 +45,7 @@ def save_file():
 
 
 def compileFile():
+    print("Starting compiling")
     # if there is no path, save a new file (save as)
     if(fileAllPath == ""):
         save_file()
@@ -58,14 +59,21 @@ def compileFile():
     os.system("a.exe < "+file_to_compile.name + " 2>output.txt")
     os.system("a.exe < "+file_to_compile.name + " 1>>output.txt")
     output = open("output.txt", "r")
+    terminal.config(state='normal')
     terminal.delete(1.0, tk.END)
-    newLines="\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    terminal.config(state='disabled')
+    newLines = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     with open("output.txt", "r") as input_file:
         text = input_file.read()
         if text:
+            terminal.config(state='normal')
             terminal.insert(tk.END, text+newLines)
+            terminal.config(state='disabled')
         else:
-            terminal.insert(tk.END,"Code compiled successfully")
+            terminal.config(state='normal')
+            terminal.insert(tk.END, "Code compiled successfully")
+            terminal.config(state='disabled')
+
 
 window = tk.Tk()
 
@@ -115,7 +123,13 @@ code_editor = CodeEditor(
     pady=10,
 )
 code_editor.pack(fill="both", expand=True)
-code_editor.content = """print("Hello World")"""
+code_editor.content = """
+class Main{
+    public static void main(String [] args){
+        
+    }
+}
+"""
 
 window.update()
 window.mainloop()

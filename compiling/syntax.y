@@ -6,7 +6,14 @@
 extern int nbLigne;
 
 int err= 0;
+// the variable nom will stock the name of an identifier
 char nom [256];
+//------------- THIS BLOCK IS FOR METHODS HANDELING---------------------
+char methodName [50];
+char * mehtodArgs [50];
+int nbArgs=0;
+int nbCalledArgs=0;
+//----------------
 int yyerror(char const * msg);	
 int yylex();
 
@@ -49,9 +56,14 @@ int yylex();
 %start program
 %%
                                                            
-program	  : {{init();}} mainClass classDeclaration 
+program	  : {{init();}} mainClass classDeclaration  
+                        {{  
+                            verifyCalledMethods();
+                            printSymbolTable();
+                           printUsedMethods();
+                        }}
 
-mainClass : kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
+mainClass : kw_class identifier  openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
             identifier closeParentheses openBraces varsDeclaration statement closeBraces closeBraces
           | error identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
             identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le mot cle 'class' est manquant"); }
@@ -89,7 +101,10 @@ mainClass : kw_class identifier openBraces kw_public kw_static kw_void kw_main o
             identifier closeParentheses openBraces statement closeBraces error {yyerror ("'}' expected"); }
 
 
-classDeclaration: kw_class identifier parentClass openBraces varsDeclaration 
+classHead: kw_class identifier  {{
+                                  addClass(nom,nbLigne);
+                                  }}  parentClass
+classDeclaration:  classHead openBraces  varsDeclaration 
                   methodDeclaration closeBraces classDeclaration
                 | error identifier parentClass openBraces varsDeclaration
                   methodDeclaration closeBraces classDeclaration {yyerror ("'class' expected"); }
@@ -108,7 +123,10 @@ parentClass: kw_extends identifier
 
 identifierOrNumber: identifier | integerLiteral
 
-varsDeclaration: typeDeclaration identifier Semicolon varsDeclaration 
+varsDeclaration: typeDeclaration identifier Semicolon {{
+  
+                  addVariable(nom,nbLigne,0);
+                  }} varsDeclaration 
           | typeDeclaration openSquareBrackets closeSquareBrackets identifier Semicolon varsDeclaration
 	       | typeDeclaration identifier affectation identifierOrNumber Semicolon varsDeclaration
 	       | error identifier Semicolon varsDeclaration {yyerror ("invalid type declaration "); }
@@ -121,40 +139,10 @@ varsDeclaration: typeDeclaration identifier Semicolon varsDeclaration
 	       | typeDeclaration identifier affectation identifierOrNumber error varsDeclaration {yyerror ("';' expected "); }
 	       |
 typeDeclaration : _type | kw_String
-methodDeclaration: kw_public typeDeclaration identifier openParentheses functionVars 
-                   closeParentheses openBraces varsDeclaration statement kw_return  expression Semicolon closeBraces methodDeclaration
-                 |kw_public typeDeclaration identifier openParentheses functionVars 
-                   closeParentheses openBraces varsDeclaration statement     closeBraces   {printf ("Line %d:return statement expected ",nbLigne); exit(0) } methodDeclaration 
-                 kw_public typeDeclaration identifier openParentheses  closeParentheses openBraces closeBraces methodDeclaration
-                 | error typeDeclaration identifier openParentheses functionVars
-                   closeParentheses openBraces statement kw_return  expression Semicolon closeBraces methodDeclaration
-                   {yyerror ("'public' expected "); }
-                 | kw_public error identifier openParentheses functionVars
-                   closeParentheses openBraces statement kw_return  expression Semicolon closeBraces methodDeclaration
-                   {yyerror ("invalid type declaration "); }
-                 | kw_public typeDeclaration error openParentheses functionVars
-                   closeParentheses openBraces statement kw_return  expression Semicolon closeBraces methodDeclaration
-                   {yyerror ("invalid identifier declaration "); }
-                 | kw_public typeDeclaration identifier error functionVars
-                   closeParentheses openBraces statement kw_return  expression Semicolon closeBraces methodDeclaration
-                   {yyerror ("'(' expected "); }
-                 | kw_public typeDeclaration identifier openParentheses functionVars
-                   error openBraces statement kw_return  expression Semicolon closeBraces methodDeclaration
-                   {yyerror ("')' expected "); }
-                 | kw_public typeDeclaration identifier openParentheses functionVars
-                   closeParentheses error statement kw_return  expression Semicolon closeBraces methodDeclaration
-                   {yyerror ("'{' expected"); }
-                 | kw_public typeDeclaration identifier openParentheses functionVars
-                   closeParentheses openBraces statement error  expression Semicolon closeBraces methodDeclaration
-                   {yyerror ("'return' expected"); }
-                 | kw_public typeDeclaration identifier openParentheses functionVars
-                   closeParentheses openBraces statement kw_return  expression error closeBraces methodDeclaration
-                   {yyerror ("';' expected"); }
-                 | kw_public typeDeclaration identifier openParentheses functionVars
-                   closeParentheses openBraces statement kw_return  expression Semicolon error methodDeclaration
-                   {yyerror ("')' expected"); }
-
-                 |
+methodHead:  
+methodDeclaration:  kw_public typeDeclaration identifier {{strcpy(methodName,nom);}} openParentheses   
+                   functionVars closeParentheses  openBraces varsDeclaration   statement kw_return  expression Semicolon closeBraces methodDeclaration
+                  |
 
 
 
@@ -163,11 +151,32 @@ methodDeclaration: kw_public typeDeclaration identifier openParentheses function
 
                    
 functionVars: functionVariables |
-functionVariables :  typeDeclaration identifier | typeDeclaration identifier comma functionVariables 
+functionVariables :  typeDeclaration identifier 
+                    {{
+                    
+                          char aux [50];
+                          strcpy(aux,nom);
+                          mehtodArgs[nbArgs]=(char*)malloc(50*sizeof(char));
+                          memcpy(mehtodArgs[nbArgs],aux,strlen(aux)+1);
+                          nbArgs ++;
+                          addMethod(methodName,mehtodArgs,nbArgs,nbLigne);
+                          nbArgs=0;
+                    
+                    }}
+                    | typeDeclaration identifier 
+                    {{
+                          char aux [50];
+                          strcpy(aux,nom);
+                          mehtodArgs[nbArgs]=(char*)malloc(50*sizeof(char));
+                          memcpy(mehtodArgs[nbArgs],aux,strlen(aux)+1);
+                          nbArgs ++;
+                    }}
+                      comma functionVariables 
 
 
 statement:  
             openBraces statement closeBraces statement|
+            openBraces varsDeclaration closeBraces|
             error statement closeBraces {yyerror ("'{' expected"); }|
             openBraces statement error {yyerror ("'}' expected"); } |
             kw_if openParentheses expression closeParentheses statement kw_else statement |
@@ -184,7 +193,13 @@ statement:
             kw_print error expression closeParentheses Semicolon {yyerror ("'(' expected"); } |
             kw_print openParentheses expression error Semicolon {yyerror ("')' expected"); }|
             kw_print openParentheses expression closeParentheses error {yyerror ("';' expected"); }|
-            identifier affectation expression Semicolon statement|
+            identifier  affectation {{
+             printf("Hello world\n");
+             // if(!searchIdInCurrentScope(nom,0)){
+             //   printf("Line %d: Identifier %d used but not declared\n",nbLigne,nom);
+             // };
+
+            }} expression Semicolon statement|
             error affectation expression Semicolon {yyerror ("invalid expression"); }|
             identifier error expression Semicolon {yyerror ("'=' expected"); } |
             identifier affectation expression error {yyerror ("';' expected"); } |
@@ -197,12 +212,17 @@ statement:
 
  booleanExpression: identifier operator identifier {yyerror ("OK!"); }
 expression : identifier operator identifier |
-	          expression error expression {yyerror ("'operator' expected"); }|
              expression openSquareBrackets expression closeSquareBrackets |
              expression error expression closeSquareBrackets {yyerror ("'[' expected"); } |
              expression openSquareBrackets expression error {yyerror ("']' expected"); } |
              expression dot kw_length |
-             expression dot identifier openParentheses expression anotherExpression  |
+             expression dot identifier {{ 
+               saveMethod(nom,nbLigne);
+             }}openParentheses expression {{nbCalledArgs++;}} anotherExpression closeParentheses {{
+                                          //printf("Number of args: %d\n",nbCalledArgs);
+                                          usedMethods[nbUsedMethods-1].nbArgs=nbCalledArgs;
+                                          nbCalledArgs=0;
+                                          }} |
              integerLiteral  |
              integerLiteral error {yyerror ("';' expected"); } |
              booleanLiteral  |
@@ -217,8 +237,8 @@ expression : identifier operator identifier |
              error expression closeParentheses {yyerror ("'(' expected"); } |
              openParentheses expression error {yyerror ("')' expected"); }  |
 
-anotherExpression: comma expression anotherExpression |
-		   error expression anotherExpression {yyerror ("';' expected"); } |
+anotherExpression: comma expression {{nbCalledArgs++;}} anotherExpression |
+		  
 
 %%
 
@@ -245,8 +265,8 @@ int main()
 }
 int yywrap()
 {
-     if(err==0)
-     printf("Code compiled successfully");
+//     if(err==0)
+  //   printf("Code compiled successfully\n");
 
 	return(1);
 }

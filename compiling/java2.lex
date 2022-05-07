@@ -85,6 +85,7 @@ oper           "&&"|"<"|"+"|"-"|"*"
 {integerLiteral}                        return integerLiteral;
 {identifier}                            { 
                                              strcpy(nom, yytext);
+                                          //   printf("nom=%s\n",nom);
                                              return identifier;
                                         }
 
