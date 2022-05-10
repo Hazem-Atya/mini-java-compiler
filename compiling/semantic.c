@@ -29,6 +29,7 @@ void printSymbolTable()
         printf("name: %s \n", symbolTable[i].name);
         printf("scope: %d\n", symbolTable[i].scope);
         printf("type: %s\n", TYPES[symbolTable[i].type]);
+        printf("Is initialisated: %d\n", symbolTable[i].isInit);
         printf("---------------------------------\n");
     }
 }
@@ -85,11 +86,19 @@ void addVariable(char varName[], int line, int isMethodArg)
     symbolTable[nbIdentifiers].isInit = 0;
     symbolTable[nbIdentifiers].isUsed = 0;
     symbolTable[nbIdentifiers].nbArgs = 0;
+    symbolTable[nbIdentifiers].line = line;
     symbolTable[nbIdentifiers].type = VARIABLE;
     if (!isMethodArg)
+    {
         symbolTable[nbIdentifiers].scope = currentScope;
+        symbolTable[nbIdentifiers].isMethodArg = 0;
+    }
+
     else
+    {
         symbolTable[nbIdentifiers].scope = maxScope + 1;
+        symbolTable[nbIdentifiers].isMethodArg = 1;
+    }
 
     // printf("Nom in here  is:%s\n", symbolTable[nbIdentifiers].name);
 
@@ -117,13 +126,6 @@ void addClass(char varName[], int line)
 }
 void addMethod(char methodName[], char *args[], int nbArgs, int nbLine)
 {
-    // printf("METHOD NAME: %s\n", methodName);
-    // printf("NUMBER OF ARGS:%d\n", nbArgs);
-    // for (int i = 0; i < nbArgs; i++)
-    // {
-    //     printf("%s\n", args[i]);
-    // }
-
     strcpy(symbolTable[nbIdentifiers].name, methodName);
     symbolTable[nbIdentifiers].isInit = 0;
     symbolTable[nbIdentifiers].isUsed = 0;
@@ -183,8 +185,100 @@ int verifyCalledMethods()
 {
     for (int j = 0; j < nbUsedMethods; j++)
     {
-        // printf("Method name: %s\n", usedMethods[j].methodName);
-        // printf("line: %d\n", usedMethods[j].lineNumber);
+
         verifyOneMethod(usedMethods[j].methodName, usedMethods[j].nbArgs, usedMethods[j].lineNumber);
+    }
+}
+
+// this function gets to params that represents two scopes,
+// if the second scope is a parent of the fisrt scope => return 1
+// else => return 0
+int isItMyParentScope(int childScope, int parentScope)
+{
+    if (childScope == parentScope)
+    {
+        return 1;
+    }
+    while (childScope != 0)
+    {
+        if (scope[childScope].parent == parentScope)
+        {
+            return 1;
+        }
+        childScope = scope[childScope].parent;
+    }
+}
+
+int isIdDeclared(char varName[], int line)
+{
+    for (int i = 0; i < nbIdentifiers; i++)
+    {
+        if ((isItMyParentScope(currentScope, symbolTable[i].scope)) && (!strcmp(symbolTable[i].name, varName)))
+        {
+            return 1;
+        }
+    }
+    printf("Line %d: Identifier %s used but not declared\n", line, varName);
+    exit(0);
+    return 0;
+}
+
+int markVarInitialised(char varName[], int currScope)
+{
+
+    for (int i = 0; i < nbIdentifiers; i++)
+    {
+        if ((strcmp(symbolTable[i].name, varName) == 0) && (symbolTable[i].scope == currScope))
+        {
+            symbolTable[i].isInit = 1;
+            return 1;
+        }
+    }
+    return 0;
+}
+int markAsInitialisated(char varName[])
+{
+    int currScope = currentScope;
+    while (!markVarInitialised(varName, currScope) && currScope != 0)
+    {
+        currScope = scope[currentScope].parent;
+    }
+    // printf("Error occured! variable does not exist");
+    // exit(0);
+}
+int markVarUsed(char varName[], int currScope)
+{
+    for (int i = 0; i < nbIdentifiers; i++)
+    {
+        if ((strcmp(symbolTable[i].name, varName) == 0) && (symbolTable[i].scope == currScope))
+        {
+            symbolTable[i].isUsed = 1;
+            return 1;
+        }
+    }
+    return 0;
+}
+void markAsUsed(char varName[])
+{
+    int currScope = currentScope;
+    while (!markVarUsed(varName, currScope) && currScope != 0)
+    {
+        currScope = scope[currentScope].parent;
+    }
+}
+int displayWarnings()
+{
+    for (int i = 0; i < nbIdentifiers; i++)
+    {
+        if ((symbolTable[i].type == VARIABLE) && (symbolTable[i].isInit == 0) && (symbolTable[i].isMethodArg == 0))
+        {
+            printf("Warning line %d: variable %s declared but not initialisated\n",
+                   symbolTable[i].line, symbolTable[i].name);
+        }
+        else if ((symbolTable[i].type == VARIABLE) && (symbolTable[i].isUsed == 0))
+        {
+            printf("Warning line %d: variable %s declared and initialisated but not used\n",
+                   symbolTable[i].line, symbolTable[i].name);
+        }
     }
 }

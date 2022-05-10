@@ -59,6 +59,7 @@ int yylex();
 program	  : {{init();}} mainClass classDeclaration  
                         {{  
                             verifyCalledMethods();
+                            displayWarnings();
                             printSymbolTable();
                            printUsedMethods();
                         }}
@@ -177,32 +178,14 @@ functionVariables :  typeDeclaration identifier
 statement:  
             openBraces statement closeBraces statement|
             openBraces varsDeclaration closeBraces|
-            error statement closeBraces {yyerror ("'{' expected"); }|
-            openBraces statement error {yyerror ("'}' expected"); } |
             kw_if openParentheses expression closeParentheses statement kw_else statement |
-            error openParentheses expression closeParentheses statement kw_else statement {yyerror ("invalid expression"); }|
-            kw_if error expression closeParentheses statement kw_else statement {yyerror ("'(' expected"); } |
-            kw_if openParentheses expression error statement kw_else statement {yyerror ("')' expected"); } |
-            kw_if openParentheses expression closeParentheses statement error statement {yyerror ("invalid expression"); } |
             kw_while openParentheses expression closeParentheses statement |
-            error openParentheses expression closeParentheses statement {yyerror ("invalid expression"); } |
-            kw_while error expression closeParentheses statement {yyerror ("'(' expected"); }  |
-            kw_while openParentheses expression error statement {yyerror ("')' expected"); }|
             kw_print openParentheses expression closeParentheses Semicolon statement|
-            error openParentheses expression closeParentheses Semicolon {yyerror ("invalid expression"); }|
-            kw_print error expression closeParentheses Semicolon {yyerror ("'(' expected"); } |
-            kw_print openParentheses expression error Semicolon {yyerror ("')' expected"); }|
-            kw_print openParentheses expression closeParentheses error {yyerror ("';' expected"); }|
             identifier  affectation {{
-             printf("Hello world\n");
-             // if(!searchIdInCurrentScope(nom,0)){
-             //   printf("Line %d: Identifier %d used but not declared\n",nbLigne,nom);
-             // };
-
+            // printf("Hello world\n");
+              isIdDeclared(nom,nbLigne);
+              markAsInitialisated(nom);
             }} expression Semicolon statement|
-            error affectation expression Semicolon {yyerror ("invalid expression"); }|
-            identifier error expression Semicolon {yyerror ("'=' expected"); } |
-            identifier affectation expression error {yyerror ("';' expected"); } |
             identifier openSquareBrackets expression closeSquareBrackets affectation expression Semicolon|
             error openSquareBrackets expression closeSquareBrackets affectation expression Semicolon {yyerror ("invalid expression"); } |
             identifier error expression closeSquareBrackets affectation expression Semicolon {yyerror ("'[' expected"); } |
@@ -210,9 +193,29 @@ statement:
             identifier openSquareBrackets expression closeSquareBrackets error expression Semicolon {yyerror ("'=' expected"); } |
             identifier openSquareBrackets expression closeSquareBrackets affectation expression error {yyerror ("';' expected"); } |
 
- booleanExpression: identifier operator identifier {yyerror ("OK!"); }
-expression : identifier operator identifier |
-             expression openSquareBrackets expression closeSquareBrackets |
+expression : identifier {{
+            // printf("Hello world\n");
+              isIdDeclared(nom,nbLigne);
+              markAsUsed(nom);
+            }}  operator identifier {{
+             //printf("Hello world\n");
+              isIdDeclared(nom,nbLigne);
+              markAsUsed(nom);
+            }}  
+            |
+             expression openSquareBrackets expression closeSquareBrackets 
+            |
+             identifier  {{
+             //printf("Hello world\n");
+              isIdDeclared(nom,nbLigne);
+              markAsUsed(nom);
+            }}  operator integerLiteral 
+            |
+             integerLiteral operator identifier  {{
+             //printf("Hello world\n");
+              isIdDeclared(nom,nbLigne);
+            }} 
+            |
              expression error expression closeSquareBrackets {yyerror ("'[' expected"); } |
              expression openSquareBrackets expression error {yyerror ("']' expected"); } |
              expression dot kw_length |
@@ -230,12 +233,8 @@ expression : identifier operator identifier |
              identifier |
              kw_this |
              kw_new identifier openParentheses closeParentheses |
-             kw_new identifier error closeParentheses {yyerror ("'(' expected"); } |
-             kw_new identifier openParentheses error  {yyerror ("')' expected"); }|
              notOperator expression |
              openParentheses expression closeParentheses  |
-             error expression closeParentheses {yyerror ("'(' expected"); } |
-             openParentheses expression error {yyerror ("')' expected"); }  |
 
 anotherExpression: comma expression {{nbCalledArgs++;}} anotherExpression |
 		  

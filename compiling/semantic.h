@@ -25,4 +25,6 @@ typedef struct
     int isInit; // =1 if the identifier is initialisated and 0 otherwise
     int isUsed; // =  =1 if the identifier is used and 0 otherwise
     int nbArgs; // contains the number of arguments if the identifier is a method
+    int line;
+    int isMethodArg;
 } node;
