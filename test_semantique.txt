@@ -1,0 +1,62 @@
+class MAIN{
+public static void main( String [] args ){ 
+int add;
+int a;
+int b;
+int c;
+
+
+System.out.println(new Test().method2(a,b)); //number of args + undefined methods 
+System.out.println(new Test().method(a,b,c));
+}
+}
+class Test {
+int a;
+//int a;   // already defined in this scope
+int b;
+int c;
+int myVar;
+ public int method(int a1,int a2,float a3){
+
+int f;
+f=7;
+
+//int a3;  //already defined in this scope
+myVar=8;
+a3=8;
+a1=a1+a3;  
+// a1= a1 + a8;  // Line 20: Identifier a8 used but not declared
+// a1= a8 + a1;   // Line 21: Identifier a8 used but not declared
+//a001= a1+a2;     // Line 22: Identifier a001 used but not declared
+
+a2=7+a;  
+//a2= 7+ a005;  // Line 25: Identifier a005 used but not declared
+
+return 5;
+}
+
+
+ public int method2(int f1,int f2){
+int f;
+f=7;
+return 5;
+}
+
+}
+class Testi{
+ public int method5(int f){
+	int f1;
+{
+int f2;
+}
+return 5;
+}
+}	
+
+//class Testi{}
+
+
+
+
+
+
