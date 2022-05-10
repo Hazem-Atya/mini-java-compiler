@@ -1,0 +1,13 @@
+
+✔ class already defined.
+✔ variable already defined in this scope 
+
+✔ method arg redefined in method body
+
+✔ method called but not defined 
+
+✔ method called with 3 arguments but defined with 2 arguments 
+
+✔ une variable utilisée est bien déclarée
+✔ Vérifier que les variables déclarées sont bien initialisées. 
+✔ Vérifier qu’une variable déclarée est bien utilisée. 

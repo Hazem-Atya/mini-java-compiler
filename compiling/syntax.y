@@ -66,40 +66,8 @@ program	  : {{init();}} mainClass classDeclaration
 
 mainClass : kw_class identifier  openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
             identifier closeParentheses openBraces varsDeclaration statement closeBraces closeBraces
-          | error identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le mot cle 'class' est manquant"); }
-          | kw_class error openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror (" le nom du classe est manquant"); }
-	  | kw_class identifier error kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("'{' expected"); }
-          | kw_class identifier openBraces error kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le mot cle 'public' est manquant"); }
-          | kw_class identifier openBraces kw_public error kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le mot cle 'static' est manquant"); }
-          | kw_class identifier openBraces kw_public kw_static error kw_main openParentheses error openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le type de la methode est manquant"); }
- 	  | kw_class identifier openBraces kw_public kw_static kw_void error openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("la methode main est introuvable"); }
-         | kw_class identifier openBraces kw_public kw_static kw_void kw_main error kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("'(' expected"); }
-          | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String error closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("'[' expected"); }
-          | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets error
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("']' expected"); YYABORT }
-          | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            error closeParentheses openBraces statement closeBraces closeBraces {yyerror ("nom du parametre manquant"); }
-          | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses error openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces closeBraces {yyerror ("le type du parametre manquant"); }
-          | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier error openBraces statement closeBraces closeBraces {yyerror ("')' expected"); }
-          | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses error statement closeBraces closeBraces {yyerror ("'{' expected"); }
-          | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces error closeBraces closeBraces {yyerror ("la fonction main est vide"); }
-	  | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement error closeBraces {yyerror ("'}' expected"); }
-          | kw_class identifier openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces statement closeBraces error {yyerror ("'}' expected"); }
+           |kw_class identifier  openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
+             error closeParentheses openBraces varsDeclaration statement closeBraces closeBraces {yyerror ("Main method args needed"); }
 
 
 classHead: kw_class identifier  {{
@@ -143,8 +111,10 @@ typeDeclaration : _type | kw_String
 methodHead:  
 methodDeclaration:  kw_public typeDeclaration identifier {{strcpy(methodName,nom);}} openParentheses   
                    functionVars closeParentheses  openBraces varsDeclaration   statement kw_return  expression Semicolon closeBraces methodDeclaration
-                  |
-
+                  | kw_public error identifier  openParentheses   
+                   functionVars closeParentheses  openBraces varsDeclaration   statement kw_return  expression Semicolon closeBraces methodDeclaration
+                    {yyerror ("Missing return type"); }
+                  | 
 
 
 
@@ -181,11 +151,16 @@ statement:
             kw_if openParentheses expression closeParentheses statement kw_else statement |
             kw_while openParentheses expression closeParentheses statement |
             kw_print openParentheses expression closeParentheses Semicolon statement|
+            kw_print openParentheses expression error Semicolon statement 
+            {yyerror ("Missing close parentheses"); }
+            |
+          
             identifier  affectation {{
             // printf("Hello world\n");
               isIdDeclared(nom,nbLigne);
               markAsInitialisated(nom);
             }} expression Semicolon statement|
+               identifier  error  expression Semicolon statement  {yyerror ("Missing affectation"); }|
             identifier openSquareBrackets expression closeSquareBrackets affectation expression Semicolon|
             error openSquareBrackets expression closeSquareBrackets affectation expression Semicolon {yyerror ("invalid expression"); } |
             identifier error expression closeSquareBrackets affectation expression Semicolon {yyerror ("'[' expected"); } |
