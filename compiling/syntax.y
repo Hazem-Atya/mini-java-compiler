@@ -2,12 +2,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "semantic.c"
+#include "code-generator.c"
 extern int nbLigne;
 
 int err= 0;
 // the variable nom will stock the name of an identifier
 char nom [256];
+int intValue;
+char operSymbol [10];
+int index;
 //------------- THIS BLOCK IS FOR METHODS HANDELING---------------------
 char methodName [50];
 char * mehtodArgs [50];
@@ -58,14 +61,17 @@ int yylex();
                                                            
 program	  : {{init();}} mainClass classDeclaration  
                         {{  
+                           printCodeTab();
                             verifyCalledMethods();
                             displayWarnings();
                             printSymbolTable();
                            printUsedMethods();
+                           //printCodeTab();
                         }}
 
 mainClass : kw_class identifier  openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
-            identifier closeParentheses openBraces varsDeclaration statement closeBraces closeBraces
+            identifier closeParentheses openBraces {  addCode("ENTREE",-1,"main");  } 
+            varsDeclaration statement closeBraces closeBraces  
            |kw_class identifier  openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
              error closeParentheses openBraces varsDeclaration statement closeBraces closeBraces {yyerror ("Main method args needed"); }
 
@@ -109,9 +115,18 @@ varsDeclaration: typeDeclaration identifier Semicolon {{
 	       |
 typeDeclaration : _type | kw_String
 methodHead:  
-methodDeclaration:  kw_public typeDeclaration identifier {{strcpy(methodName,nom);}} openParentheses   
-                   functionVars closeParentheses  openBraces varsDeclaration   statement kw_return  expression Semicolon closeBraces methodDeclaration
-                  | kw_public error identifier  openParentheses   
+methodDeclaration:  kw_public typeDeclaration identifier 
+                    {{
+                        strcpy(methodName,nom);
+                        addCode("ENTREE",-1,methodName);
+                    }} 
+                    openParentheses  functionVars closeParentheses  openBraces varsDeclaration   statement kw_return  expression Semicolon closeBraces
+                     {
+                      addCode("SORTIE",-1,methodName);
+                     } methodDeclaration
+                  
+                  |
+                   kw_public error identifier  openParentheses   
                    functionVars closeParentheses  openBraces varsDeclaration   statement kw_return  expression Semicolon closeBraces methodDeclaration
                     {yyerror ("Missing return type"); }
                   | 
@@ -147,19 +162,47 @@ functionVariables :  typeDeclaration identifier
 
 statement:  
             openBraces statement closeBraces statement|
-            openBraces varsDeclaration closeBraces|
-            kw_if openParentheses expression closeParentheses statement kw_else statement |
-            kw_while openParentheses expression closeParentheses statement |
+            openBraces varsDeclaration closeBraces statement|
+            kw_if openParentheses expression closeParentheses
+            {
+              addOperator(operSymbol);
+              addCode("SIFAUX",9999,"");
+            }
+              statement kw_else  statement {
+              addCode("SAUT",3333,"");
+              } |
+            kw_while openParentheses expression closeParentheses
+            {
+              addOperator(operSymbol);
+              addCode("TANTQUEFAUX",2000,"");
+            }
+             statement |
             kw_print openParentheses expression closeParentheses Semicolon statement|
             kw_print openParentheses expression error Semicolon statement 
             {yyerror ("Missing close parentheses"); }
             |
           
-            identifier  affectation {{
+            identifier {
+              index= findIdentifier(nom);
+            }  affectation {{
             // printf("Hello world\n");
               isIdDeclared(nom,nbLigne);
               markAsInitialisated(nom);
-            }} expression Semicolon statement|
+            }} expression Semicolon  
+            { 
+              if (!strcmp(operSymbol,"*")){
+                addCode("MUL",-1,"");                
+              }
+              else if (!strcmp(operSymbol,"+")){
+                addCode("ADD",-1,""); 
+              }
+              else if (!strcmp(operSymbol,"-")){
+                addCode("SUB",-1,""); 
+
+              }
+              addCode("STORE ",index,"");
+            } 
+            statement|
                identifier  error  expression Semicolon statement  {yyerror ("Missing affectation"); }|
             identifier openSquareBrackets expression closeSquareBrackets affectation expression Semicolon|
             error openSquareBrackets expression closeSquareBrackets affectation expression Semicolon {yyerror ("invalid expression"); } |
@@ -168,14 +211,18 @@ statement:
             identifier openSquareBrackets expression closeSquareBrackets error expression Semicolon {yyerror ("'=' expected"); } |
             identifier openSquareBrackets expression closeSquareBrackets affectation expression error {yyerror ("';' expected"); } |
 
-expression : identifier {{
+expression : identifier  {{
             // printf("Hello world\n");
               isIdDeclared(nom,nbLigne);
               markAsUsed(nom);
+              int index =  findIdentifier(nom);
+              addCode("LDV",index,"");
             }}  operator identifier {{
              //printf("Hello world\n");
               isIdDeclared(nom,nbLigne);
               markAsUsed(nom);
+              int index =  findIdentifier(nom);
+              addCode("LDV",index,"");
             }}  
             |
              expression openSquareBrackets expression closeSquareBrackets 
@@ -184,11 +231,19 @@ expression : identifier {{
              //printf("Hello world\n");
               isIdDeclared(nom,nbLigne);
               markAsUsed(nom);
-            }}  operator integerLiteral 
+              int index =  findIdentifier(nom);
+              addCode("LDV",index,"");
+            }}  operator integerLiteral {
+              addCode("LDC",intValue,"");
+            }
             |
-             integerLiteral operator identifier  {{
+             integerLiteral {
+                addCode("LDC",intValue,"");
+             } operator identifier  {{
              //printf("Hello world\n");
               isIdDeclared(nom,nbLigne);
+               int index =  findIdentifier(nom);
+              addCode("LDV",index,"");
             }} 
             |
              expression error expression closeSquareBrackets {yyerror ("'[' expected"); } |
@@ -201,11 +256,21 @@ expression : identifier {{
                                           usedMethods[nbUsedMethods-1].nbArgs=nbCalledArgs;
                                           nbCalledArgs=0;
                                           }} |
-             integerLiteral  |
+             integerLiteral 
+              {
+                index= findIdentifier(nom);
+                addCode("LDC",intValue,"");
+              }             
+            |
              integerLiteral error {yyerror ("';' expected"); } |
              booleanLiteral  |
              booleanLiteral error {yyerror ("';' expected"); } |
-             identifier |
+             identifier 
+              {
+                index= findIdentifier(nom);
+                addCode("LDV",index,"");
+              } 
+            |
              kw_this |
              kw_new identifier openParentheses closeParentheses |
              notOperator expression |

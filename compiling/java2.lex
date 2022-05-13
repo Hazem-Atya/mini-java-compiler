@@ -10,7 +10,8 @@
 #include <math.h>	 			
 
 extern char nom[];
-
+extern char operSymbol [];
+extern int intValue;
 
 int nbLigne =1;
 
@@ -32,7 +33,7 @@ booleanLiteral                          "true"|"false"
 type                 {primitiveType}|array 
 primitiveType              "boolean"|"int"|"float" 
 array             ({primitiveType}{delim}+{openSquareBrackets}{delim*}{closeSquareBrackets})
-oper           "&&"|"<"|"+"|"-"|"*"     
+oper           "=="|"<"|"+"|"-"|"*"|"!="     
 
 
 %%
@@ -70,7 +71,10 @@ oper           "&&"|"<"|"+"|"-"|"*"
                                              return closeBraces;
                                         }
 
-{oper}                     return operator;
+{oper}                                  {
+                                        strcpy(operSymbol,yytext);
+                                         return operator;
+                                        }
 "="                                     return affectation;
 "!"                                  return notOperator;
 "."                                     return dot;
@@ -82,7 +86,11 @@ oper           "&&"|"<"|"+"|"-"|"*"
 
 
 {booleanLiteral}                        return booleanLiteral;
-{integerLiteral}                        return integerLiteral;
+{integerLiteral}                        {
+                                            //strcpy(intValue,yytext);
+                                            intValue = atoi(yytext);
+                                            return integerLiteral;      
+                                        }
 {identifier}                            { 
                                              strcpy(nom, yytext);
                                           //   printf("nom=%s\n",nom);

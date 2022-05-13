@@ -23,15 +23,17 @@ void sayHello(char *line)
 }
 void printSymbolTable()
 {
+    printf("%5s %10s %10s %10s %10s\n", "Index", "Name", "Scope", "Type", "Is init");
+    printf("------------------------------------------------------------\n");
+    printf("                      Symbol table                          \n");
+    printf("------------------------------------------------------------\n");
     for (int i = 0; i < nbIdentifiers; i++)
     {
-        printf("---------------------------------\n");
-        printf("name: %s \n", symbolTable[i].name);
-        printf("scope: %d\n", symbolTable[i].scope);
-        printf("type: %s\n", TYPES[symbolTable[i].type]);
-        printf("Is initialisated: %d\n", symbolTable[i].isInit);
-        printf("---------------------------------\n");
+        printf("%5d %10s %10d %10s %10d\n", i, symbolTable[i].name,
+               symbolTable[i].scope, TYPES[symbolTable[i].type], symbolTable[i].isInit);
     }
+        printf("------------------------------------------------------------\n\n\n");
+
 }
 void init()
 {
@@ -281,4 +283,22 @@ int displayWarnings()
                    symbolTable[i].line, symbolTable[i].name);
         }
     }
+}
+
+/*-----------------
+the following functions were created for code generation purposes
+--------------------*/
+
+// returns the index of an identifier
+int findIdentifier(char idName[])
+{
+    for (int i = 0; i < nbIdentifiers; i++)
+    {
+        if ((strcmp(symbolTable[i].name, idName) == 0) && (isItMyParentScope(currentScope, symbolTable[i].scope)))
+        {
+            return i;
+        }
+    }
+    printf("IDENTIFIER %s NOT FOUND\n", idName);
+    exit(0);
 }

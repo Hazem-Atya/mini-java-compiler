@@ -49,11 +49,14 @@ class Testi{
 {
 int f2;
 }
+//f2=5;  // identifier used but not declared
+f1=4;
 return 5;
 }
 }	
 
 //class Testi{}
+
 
 
 

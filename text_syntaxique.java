@@ -20,13 +20,13 @@ System.out.println(a); // la parenthèse fermante
 b=  5 ;//  affectation,  semicolon
 //b=5;
 
-if (!(a && b))
+if (!(a == b))
 {
 	a=7;
 }else 
 	b=4;
 
-while (i &&  t) //  "&&"
+while (i ==  t) //  "&&"
 {
 a=5;
 }
