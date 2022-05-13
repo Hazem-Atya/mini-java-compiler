@@ -279,7 +279,7 @@ int displayWarnings()
         }
         else if ((symbolTable[i].type == VARIABLE) && (symbolTable[i].isUsed == 0))
         {
-            printf("Warning line %d: variable %s declared and initialisated but not used\n",
+            printf("Warning line %d: variable %s not used\n",
                    symbolTable[i].line, symbolTable[i].name);
         }
     }
@@ -299,6 +299,7 @@ int findIdentifier(char idName[])
             return i;
         }
     }
-    printf("IDENTIFIER %s NOT FOUND\n", idName);
-    exit(0);
+    //printf("IDENTIFIER %s NOT DECLARED\n", idName);
+    //exit(0);
+    return -1;
 }

@@ -4,8 +4,6 @@ int add;
 int a;
 int b;
 int c;
-
-
 System.out.println(new Test().method2(a,b)); //number of args + undefined methods 
 System.out.println(new Test().method(a,b,c));
 }
@@ -17,9 +15,7 @@ int b;
 int c;
 int myVar;
  public int method(int a1,int a2,float a3){
-
 int f;
-
 //int a3;  //already defined in this scope
 myVar=8;
 a3=8;
@@ -43,21 +39,18 @@ return 5;
 
 }
 class Testi{
- public int method5(int f){
-	int f1;
+ public int method5(int p){
+	int tata1;
 {
-int f2;
+int innerVar;
 }
-//f2=5;  // identifier used but not declared
-f1=4;
+innerVar=5;  // identifier used but not declared
+tata1=4;
 return 5;
 }
 }	
 
-//class Testi{}
-
-
-
+//class Testi{}   // class already defined
 
 
 

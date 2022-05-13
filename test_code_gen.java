@@ -24,7 +24,7 @@ if (t ==  b)
 {	b=4; }
 
 b=5+t;
-while (i ==  t) 
+while (i <  t) 
 {
 i=14;
 }
@@ -40,6 +40,9 @@ return 5;
 }
 
 }
+
+
+
 
 
 

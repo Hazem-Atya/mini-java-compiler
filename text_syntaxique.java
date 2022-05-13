@@ -1,13 +1,14 @@
 class  MAIN{
-public static  void main( String [] args)// args  
+public static  void main( String [] args )  //args
 {
 int a;
+
 int b;
 a=5;
 }
 }
-class  Test { // open braces + key word class 
-public int   m(int a) // return type 
+class int Test { // open braces + key word class 
+public  m(int a) // return type 
 {
 int [] a; // une des deux accolades
 int b;
@@ -16,7 +17,7 @@ int t;
 {a=5;}
 a=5;
 
-System.out.println(a); // la parenthese fermante
+System.out.println(a; // la parenthese fermante
 b =  5 ;//  affectation,  semicolon
 
 
@@ -36,6 +37,5 @@ return 5;
 }
 
 }
-
 
 
