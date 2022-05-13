@@ -19,7 +19,6 @@ int myVar;
  public int method(int a1,int a2,float a3){
 
 int f;
-f=7;
 
 //int a3;  //already defined in this scope
 myVar=8;
@@ -56,6 +55,7 @@ return 5;
 }	
 
 //class Testi{}
+
 
 
 

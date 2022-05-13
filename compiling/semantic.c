@@ -23,17 +23,17 @@ void sayHello(char *line)
 }
 void printSymbolTable()
 {
-    printf("%5s %10s %10s %10s %10s\n", "Index", "Name", "Scope", "Type", "Is init");
-    printf("------------------------------------------------------------\n");
+    printf("\n\n\n------------------------------------------------------------\n");
     printf("                      Symbol table                          \n");
     printf("------------------------------------------------------------\n");
+    printf("%5s %10s %10s %10s %10s\n", "Index", "Name", "Scope", "Type", "Is init");
+
     for (int i = 0; i < nbIdentifiers; i++)
     {
         printf("%5d %10s %10d %10s %10d\n", i, symbolTable[i].name,
                symbolTable[i].scope, TYPES[symbolTable[i].type], symbolTable[i].isInit);
     }
-        printf("------------------------------------------------------------\n\n\n");
-
+    printf("------------------------------------------------------------\n\n\n");
 }
 void init()
 {

@@ -11,6 +11,11 @@ char nom [256];
 int intValue;
 char operSymbol [10];
 int index;
+int codeTabIndex;
+int beginOfWhile;
+int calledMethodIndex;
+int backToMainIndex;
+char calledMethodName [50];
 //------------- THIS BLOCK IS FOR METHODS HANDELING---------------------
 char methodName [50];
 char * mehtodArgs [50];
@@ -61,17 +66,20 @@ int yylex();
                                                            
 program	  : {{init();}} mainClass classDeclaration  
                         {{  
-                           printCodeTab();
+                           //printCodeTab();
                             verifyCalledMethods();
                             displayWarnings();
                             printSymbolTable();
-                           printUsedMethods();
-                           //printCodeTab();
+                            printCodeTab();
+                           //printUsedMethods();
                         }}
 
 mainClass : kw_class identifier  openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
             identifier closeParentheses openBraces {  addCode("ENTREE",-1,"main");  } 
             varsDeclaration statement closeBraces closeBraces  
+            {
+              addCode("SORTIE",-1,"main");
+            }
            |kw_class identifier  openBraces kw_public kw_static kw_void kw_main openParentheses kw_String openSquareBrackets closeSquareBrackets
              error closeParentheses openBraces varsDeclaration statement closeBraces closeBraces {yyerror ("Main method args needed"); }
 
@@ -117,12 +125,14 @@ typeDeclaration : _type | kw_String
 methodHead:  
 methodDeclaration:  kw_public typeDeclaration identifier 
                     {{
+                        codeTabInt[calledMethodIndex].operand = nbCodes;
                         strcpy(methodName,nom);
                         addCode("ENTREE",-1,methodName);
                     }} 
                     openParentheses  functionVars closeParentheses  openBraces varsDeclaration   statement kw_return  expression Semicolon closeBraces
                      {
                       addCode("SORTIE",-1,methodName);
+                      addCode("RETOUR",backToMainIndex,"");
                      } methodDeclaration
                   
                   |
@@ -163,21 +173,39 @@ functionVariables :  typeDeclaration identifier
 statement:  
             openBraces statement closeBraces statement|
             openBraces varsDeclaration closeBraces statement|
-            kw_if openParentheses expression closeParentheses
+            kw_if openParentheses expression  closeParentheses
             {
               addOperator(operSymbol);
               addCode("SIFAUX",9999,"");
+              codeTabIndex=nbCodes-1;
             }
-              statement kw_else  statement {
+              statement kw_else
+              {
               addCode("SAUT",3333,"");
-              } |
-            kw_while openParentheses expression closeParentheses
+              codeTabInt[codeTabIndex].operand=nbCodes;
+              codeTabIndex=nbCodes-1;
+              }
+               openBraces statement closeBraces {
+              codeTabInt[codeTabIndex].operand=nbCodes;
+               }   statement|
+            kw_while openParentheses
+            {
+              beginOfWhile=nbCodes;
+            }
+             expression closeParentheses
             {
               addOperator(operSymbol);
               addCode("TANTQUEFAUX",2000,"");
+              codeTabIndex=nbCodes-1;
             }
-             statement |
-            kw_print openParentheses expression closeParentheses Semicolon statement|
+            openBraces statement closeBraces 
+            {
+              addCode("TANTQUE",2000,"");
+              codeTabInt[codeTabIndex].operand=nbCodes;
+              codeTabInt[nbCodes-1].operand=beginOfWhile;
+            }
+            statement |
+            kw_print openParentheses  expression  closeParentheses Semicolon statement|
             kw_print openParentheses expression error Semicolon statement 
             {yyerror ("Missing close parentheses"); }
             |
@@ -203,7 +231,7 @@ statement:
               addCode("STORE ",index,"");
             } 
             statement|
-               identifier  error  expression Semicolon statement  {yyerror ("Missing affectation"); }|
+            identifier  error  expression Semicolon statement  {yyerror ("Missing affectation"); }|
             identifier openSquareBrackets expression closeSquareBrackets affectation expression Semicolon|
             error openSquareBrackets expression closeSquareBrackets affectation expression Semicolon {yyerror ("invalid expression"); } |
             identifier error expression closeSquareBrackets affectation expression Semicolon {yyerror ("'[' expected"); } |
@@ -251,6 +279,10 @@ expression : identifier  {{
              expression dot kw_length |
              expression dot identifier {{ 
                saveMethod(nom,nbLigne);
+              calledMethodIndex=nbCodes;
+              strcpy(calledMethodName,nom);
+              addCode("APPEL",11111,"");
+              backToMainIndex=nbCodes;
              }}openParentheses expression {{nbCalledArgs++;}} anotherExpression closeParentheses {{
                                           //printf("Number of args: %d\n",nbCalledArgs);
                                           usedMethods[nbUsedMethods-1].nbArgs=nbCalledArgs;
