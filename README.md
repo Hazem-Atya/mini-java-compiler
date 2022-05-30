@@ -38,3 +38,5 @@ Open a terminal in the "compiling" folder and run the script:
 
 ![Untitled](https://user-images.githubusercontent.com/53778545/166907908-1a71d964-1a54-430c-8d4b-158cf09664a4.png)
 
+### App screenshot
+![image](https://user-images.githubusercontent.com/53778545/171065949-fbf7ce45-0870-4920-a52b-d63ce881b6f1.png)
