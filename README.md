@@ -34,5 +34,7 @@ Open a terminal in the "compiling" folder and run the script:
 ```
 ./script.bash
 ```
+ ### Generating scope graph example:
+
 ![Untitled](https://user-images.githubusercontent.com/53778545/166907908-1a71d964-1a54-430c-8d4b-158cf09664a4.png)
 
